@@ -1,22 +1,21 @@
 <?php
+require_once './App.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-require_once './../vendor/autoload.php';
-
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+use App\App;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 
-$loader = new FilesystemLoader('./../templates');
-$twig = new Environment($loader, [
-    'cache' => false,//'./../cache',
-    'debug' => true,
-]);
+$App = new App();
 
-    $template = $twig->load('home.tpl.html');
+
+try {
+    $template = $App->getTwig()->load('home.tpl.html');
+} catch (LoaderError|RuntimeError|SyntaxError $e) {
+    echo $e->getMessage();
+    exit();
+}
 
 echo $template->render([
     'title' => 'Home',
