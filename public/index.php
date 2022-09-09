@@ -7,10 +7,12 @@ require_once './../Helper/App.php';
 
 
 use App\App;
+use App\DB;
 use App\Page;
 
 // On instancie la classe App
 $App = new App();
+$Context = new DB();
 
 /*
  * EXEMPLE D'UTILISATION DE TWIG
@@ -31,8 +33,9 @@ $params = [
 $page = new Page('home.tpl.html', $params);
 $page->addParam('age', 30);
 
-// On affiche le template (avec les paramètres)
+// On affiche le template (avec les paramètres).
 echo $page->display();
 
-var_export($App->getDb());
-
+$🤔 = $Context->getKeywords();
+$🤣 = $Context->getKeyword(5);
+var_dump($🤣);
