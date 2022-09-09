@@ -1,0 +1,16 @@
+{% extends "base/base.tpl.twig" %}
+
+{% block body %}
+
+    <h1>Hello World</h1>
+    <p>The patient is {{ name }}</p>
+    <p>He is {{ age }} years old</p>
+
+    <p>Problems:</p>
+    <ul>
+        {% for item in items %}
+        <li><p>{{ item }}</p></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

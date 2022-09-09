@@ -28,11 +28,10 @@ $params = [
     ],
 ];
 
-$page = new Page('home.tpl.html', $params);
+$page = new Page('home.tpl.twig', $params);
 $page->addParam('age', 30);
 
 // On affiche le template (avec les paramètres)
 echo $page->display();
 
-var_export($App->getDb());
 

@@ -25,7 +25,7 @@ class Page
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
             try {
                 // On charge le template
-                $this->template = self::getTwig()->load('error.tpl.html');
+                $this->template = self::getTwig()->load('error.tpl.twig');
             // La page 404 n'existe pas, ce n'est pas normal
             } catch (LoaderError|RuntimeError|SyntaxError $e) {
                 echo $e->getMessage();
