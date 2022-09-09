@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace Helper\Twig;
 
+use Helper\App\Constant;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;

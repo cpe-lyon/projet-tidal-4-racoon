@@ -2,12 +2,12 @@
 // On charge la classe App
 // Elle va permettre de charger les autres classes nécessaire et
 // de mettre en place les bases qui seront utilisé
-require_once './../Helper/App.php';
+require_once './../Helper/App/Autoloader.php';
 
 
+use Helper\App\App;
+use Helper\Twig\Page;
 
-use App\App;
-use App\Page;
 
 // On instancie la classe App
 $App = new App();
