@@ -6,6 +6,10 @@ use Helper\App\Routes\Types\HTTP;
 use Exception;
 use Helper\Twig\Page;
 
+
+/**
+ * Class Response - Gère les réponses HTTP
+ */
 class Response
 {
     private const TYPE_HTML = 'text/html';
@@ -25,13 +29,33 @@ class Response
     private const TYPE_ODS = 'application/vnd.oasis.opendocument.spreadsheet';
     private const TYPE_ODP = 'application/vnd.oasis.opendocument.presentation';
 
+    /**
+     * @var int Code de la réponse HTTP
+     * @see HTTP::*
+     * @see https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP
+     */
     private int $statusCode;
+    /**
+     * @var mixed|string Contenu de la réponse (HTML, JSON, XML, Object, etc.)
+     */
     private mixed $content;
+    /**
+     * @var array Tableau des headers HTTP
+     */
     private array $headers;
+    /**
+     * @var string Réponse string
+     */
     private string $response;
+    /**
+     * @var string Type de contenu de la réponse
+     */
     private string $contentType;
 
 
+    /**
+     * @param mixed $data Contenu de la réponse
+     */
     public function __construct(mixed $data = '')
     {
         // si le type de $data est un objet de type Exception
@@ -54,27 +78,45 @@ class Response
         }
     }
 
+    /**
+     * @param int $statusCode Code de la réponse HTTP
+     * @return void
+     */
     public function setStatusCode(int $statusCode): void
     {
         $this->statusCode = $statusCode;
     }
 
+    /**
+     * @param mixed $content Contenu de la réponse
+     * @return void
+     */
     public function setContent(mixed $content): void
     {
         $this->content = $content;
     }
 
+    /**
+     * @param array $headers Tableau des headers HTTP
+     * @return void
+     */
     public function setHeaders(array $headers): void
     {
         $this->headers = $headers;
     }
 
+    /**
+     * @return void Envoie la réponse HTTP
+     */
     public function respond() : void
     {
         $this->response = $this->buildResponse();
         $this->sendResponse();
     }
 
+    /**
+     * @return void Envoie la réponse HTTP
+     */
     private function sendResponse(): void
     {
         header('Content-Type: ' . $this->contentType . '; charset=utf-8');
@@ -86,6 +128,9 @@ class Response
         echo $this->response;
     }
 
+    /**
+     * @return bool|string Constuit la réponse textuelle
+     */
     private function buildResponse(): bool|string
     {
         if ($this->contentType === self::TYPE_HTML){
