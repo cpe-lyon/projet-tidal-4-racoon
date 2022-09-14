@@ -2,8 +2,8 @@
 
 namespace Helper\Models;
 
-class Keyword
+class KeySympt
 {
     public int $idk;
-    public string $name;
+    public int $ids;
 }
