@@ -129,7 +129,7 @@ class Router
                 die();
             }
         }
-        return $routes['/error/404'];
+        Controller::redirectError(404);
     }
 
     public function getMethod(): string
@@ -168,6 +168,5 @@ class Router
             $params = $route->getParams();
             return $controller->$action($params);
         }
-        throw new Exception('Page inexistant', 404);
     }
 }

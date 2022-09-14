@@ -2,6 +2,7 @@
 
 namespace Helper\App\Routes;
 
+use Helper\App\Routes\Types\HTTP;
 use Exception;
 use Helper\Twig\Page;
 
@@ -23,7 +24,6 @@ class Response
     private const TYPE_ODT = 'application/vnd.oasis.opendocument.text';
     private const TYPE_ODS = 'application/vnd.oasis.opendocument.spreadsheet';
     private const TYPE_ODP = 'application/vnd.oasis.opendocument.presentation';
-
 
     private int $statusCode;
     private string $content;
@@ -47,7 +47,7 @@ class Response
             $this->headers = $data->getHeaders();
             $this->contentType = self::TYPE_HTML;
         } else {
-            $this->statusCode = 200;
+            $this->statusCode = HTTP::OK;
             $this->content = $data;
             $this->headers = [];
             $this->contentType = self::TYPE_JSON;

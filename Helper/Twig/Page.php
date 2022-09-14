@@ -2,6 +2,7 @@
 
 namespace Helper\Twig;
 
+use Helper\App\Routes\Types\HTTP;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -92,7 +93,7 @@ class Page
     {
         return new Page('error.tpl.twig', [
             'error' => [
-                'code' => '404',
+                'code' => HTTP::NOT_FOUND,
                 'message' => 'La page que tu recherches s\'est fait piquer',
             ],
         ]);
