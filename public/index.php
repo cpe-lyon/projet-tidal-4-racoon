@@ -6,6 +6,7 @@ require_once './../Helper/App/Autoloader.php';
 
 
 use Helper\App\App;
+use Helper\App\DB;
 use Helper\Twig\Page;
 
 
@@ -35,6 +36,11 @@ $page->addParam('age', 30);
 // On affiche le template (avec les paramètres).
 echo $page->display();
 
-$🤔 = $Context->getKeywords();
 $🤣 = $Context->getKeyword(5);
 var_dump($🤣);
+
+
+$🤔 = $Context->getKeywords();
+var_dump($🤔);
+
+
