@@ -6,6 +6,9 @@ use Helper\App\Constant;
 use Helper\MVC\Controller;
 use Exception;
 
+/*
+ * Class Routeur pour gérer les Routes existantes 
+ */
 class Router
 {
     const METHOD_GET = 'GET';
@@ -23,7 +26,10 @@ class Router
     private ?string $method = null;
     private ?string $route = null;
 
-
+    /*
+     * Le constructeur ne devrait être appelé qu'une
+     * fois dans le cas où l'objet d'existerait pas encore 
+     */
     public function __construct()
     {
         self::$router = $this;
@@ -34,6 +40,10 @@ class Router
         $this->getMethod();
     }
 
+    /*
+     * Récupère l'instance existante ou en créé une
+     * dans cas où elle n'existe pas
+     */
     public static function getInstance(): Router
     {
         if (self::$router === null) {
@@ -43,48 +53,73 @@ class Router
     }
 
 
+    /*
+     * Enregistre une route GET auprès du Router (VERSION STATIQUE)
+     */
     public static function get(string $route, string $controller, string $action): void
     {
         self::getInstance()->registerGet($route, $controller, $action);
     }
 
+    /*
+     * Enregistre une route POST auprès du Router (VERSION STATIQUE)
+     */
     public static function post(string $route, string $controller, string $action): void
     {
         self::getInstance()->registerPost($route, $controller, $action);
     }
 
+    /*
+     * Enregistre une route PUT auprès du Router (VERSION STATIQUE)
+     */
     public static function put(string $route, string $controller, string $action): void
     {
         self::getInstance()->registerPut($route, $controller, $action);
     }
 
+    /*
+     * Enregistre une route DELETE auprès du Router (VERSION STATIQUE)
+     */
     public static function delete(string $route, string $controller, string $action): void
     {
         self::getInstance()->registerDelete($route, $controller, $action);
     }
 
-
-
+    /*
+     * Enregistre une route GET auprès du Router
+     */
     public function registerGet(string $route, string $controller, string $action): void
     {
         $this->routesGET[$route] = new Route($route, $controller, $action, 'GET');
     }
 
+    /*
+     * Enregistre une route POST auprès du Router
+     */
     public function registerPost(string $route, string $controller, string $action): void
     {
         $this->routesPOST[$route] = new Route($route, $controller, $action, 'POST');
     }
 
+    /*
+     * Enregistre une route PUT auprès du Router
+     */
     public function registerPut(string $route, string $controller, string $action): void
     {
         $this->routesPUT[$route] = new Route($route, $controller, $action, 'PUT');
     }
 
+    /*
+     * Enregistre une route DELETE auprès du Router
+     */
     public function registerDelete(string $route, string $controller, string $action): void
     {
         $this->routesDELETE[$route] = new Route($route, $controller, $action, 'DELETE');
     }
 
+    /*
+     * Récupère les routes en fonction de la méthode HTTP
+     */
     public function getRoutes(string $method): array
     {
         return match ($method) {
@@ -97,6 +132,7 @@ class Router
     }
 
     /**
+     * Récupère la route pour la méthode HTTP précisé
      * @throws Exception
      */
     public function getRoute(string $route, string $method = null): Route|string|null
@@ -133,6 +169,9 @@ class Router
         Controller::redirectError(404);
     }
 
+    /*
+     * Récupère la méthode HTTP de la requête 
+     */
     public function getMethod(): string
     {
         if ($this->method === null) {
@@ -141,6 +180,10 @@ class Router
         return $this->method;
     }
 
+    /*
+     * Récupère URI de la requête
+     * redirection si ils finit par un / (TODO: Retirer)
+     */
     public function getURI(): string
     {
         if ($this->route === null) {
@@ -153,6 +196,9 @@ class Router
     }
 
     /**
+     * Permet de récupérer la requête, 
+     * récupérer la route lié à cette requête,
+     * et retourner le résultat de l'action lié au contrôleur 
      * @throws Exception
      */
     public function resolve()
