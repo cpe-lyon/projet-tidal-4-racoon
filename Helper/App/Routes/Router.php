@@ -2,6 +2,7 @@
 
 namespace Helper\App\Routes;
 
+use Helper\App\Constant;
 use Helper\MVC\Controller;
 use Exception;
 
@@ -115,9 +116,9 @@ class Router
         if (array_key_exists($route, $routes)) {
             return $routes[$route];
         }
-        if(!str_starts_with($route, '/src/')){
-            if(file_exists($route)){
-                $attachment_location = $_SERVER["DOCUMENT_ROOT"] . $route;
+        if(str_starts_with($route, '/src/')){
+            if(file_exists(Constant::DIR_ROOT . substr($route, 1))){
+                $attachment_location = Constant::DIR_ROOT . substr($route, 1);
                 $filename = basename($attachment_location);
                 header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
                 header("Cache-Control: public"); // needed for internet explorer
@@ -166,7 +167,7 @@ class Router
             $controller = new $controller();
             $action = $route->getAction();
             $params = $route->getParams();
-            return $controller->$action($params);
+            return $controller->$action(...$params);
         }
     }
 }
