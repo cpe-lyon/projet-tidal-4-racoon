@@ -12,6 +12,44 @@ class Page
     private static Twig $twig;
     private TemplateWrapper $template;
     private array $params;
+    private array $headers;
+
+    /**
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     * @return Page
+     */
+    public function setHeaders(array $headers): Page
+    {
+        $this->headers = $headers;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * @param int $statusCode
+     * @return Page
+     */
+    public function setStatusCode(int $statusCode): Page
+    {
+        $this->statusCode = $statusCode;
+        return $this;
+    }
+    private int $statusCode;
 
     /**
      * Contructeur de la classe Page
@@ -21,24 +59,43 @@ class Page
             // On charge le template
             $this->template = self::getTwig()->load($template);
             $this->params = $params;
+            $this->headers = [];
+            $this->statusCode = 200;
         // Si le template n'existe pas, on affiche la page 404
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
-            try {
-                // On charge le template
-                $this->template = self::getTwig()->load('error.tpl.twig');
-            // La page 404 n'existe pas, ce n'est pas normal
-            } catch (LoaderError|RuntimeError|SyntaxError $e) {
-                echo $e->getMessage();
-                exit();
-            }
-            // On ajoute les paramètres de la page 404
-            $this->params = [
-                'error' => [
-                    'code' => '404',
-                    'message' => 'La page que tu recherches s\'est fait piquer',
-                ],
-            ];
+            $page404 = Page::error404Template();
+            $this->template = self::getTwig()->load('error.tpl.twig');
+            $this->addParams([
+                    'error' => [
+                        'code' => '404',
+                        'message' => 'La page que tu recherches s\'est fait piquer',
+                    ],
+                ]);
+            $this->headers = [];
+            $this->setStatusCode(404);
         }
+    }
+
+    private static function error404Template(): TemplateWrapper
+    {
+        try {
+            $page = self::getTwig()->load('error.tpl.twig');
+            // La page 404 n'existe pas, ce n'est pas normal
+        } catch (LoaderError|RuntimeError|SyntaxError $e) {
+            echo $e->getMessage();
+            exit();
+        }
+        return $page;
+    }
+
+    public static function error404(): Page
+    {
+        return new Page('error.tpl.twig', [
+            'error' => [
+                'code' => '404',
+                'message' => 'La page que tu recherches s\'est fait piquer',
+            ],
+        ]);
     }
 
     /**

@@ -5,7 +5,7 @@ namespace Helper\App;
 /*
  * Constantes de l'application
  */
-class Constant
+class Constant_Example
 {
     const DEBUG = true;
 
