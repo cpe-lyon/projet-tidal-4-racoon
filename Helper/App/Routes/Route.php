@@ -2,10 +2,17 @@
 
 namespace Helper\App\Routes;
 
+/*
+ * Class Route représente une route qui sera 
+ * enregistré par le Router
+ * @see Router
+ * 
+ */
 class Route
 {
     private string $route;
     private string $controller;
+    /* @var string action correspond à la méthode appelé dans le contrôleur */
     private string $action;
     private string $method;
     private array $params;
@@ -17,7 +24,7 @@ class Route
         $this->action = $action;
         $this->method = $method;
 
-        // Parse the route to get the params
+        // Récupère les emplacements des paramètres dans la route
         $this->params = $this->parseRoute($route);
     }
 
