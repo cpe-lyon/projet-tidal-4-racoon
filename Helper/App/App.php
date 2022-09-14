@@ -7,6 +7,11 @@ use Helper\App\Routes\Router;
 use Exception;
 use PDO;
 
+/*
+ * Classe de l'application qui permet de gérer le
+ * routage ainsi que les informations requises à sa 
+ * construction 
+ */
 class App
 {
     private Router $router;
