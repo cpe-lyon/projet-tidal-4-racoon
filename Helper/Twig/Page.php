@@ -66,12 +66,12 @@ class Page
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
             $page404 = Page::error404Template();
             $this->template = self::getTwig()->load('error.tpl.twig');
-            $this->addParams([
+            $this->params = [
                     'error' => [
                         'code' => '404',
                         'message' => 'La page que tu recherches s\'est fait piquer',
                     ],
-                ]);
+                ];
             $this->headers = [];
             $this->setStatusCode(404);
         }

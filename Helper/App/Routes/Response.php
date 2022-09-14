@@ -26,7 +26,7 @@ class Response
     private const TYPE_ODP = 'application/vnd.oasis.opendocument.presentation';
 
     private int $statusCode;
-    private string $content;
+    private mixed $content;
     private array $headers;
     private string $response;
     private string $contentType;
@@ -77,6 +77,7 @@ class Response
 
     private function sendResponse(): void
     {
+        header('Content-Type: ' . $this->contentType . '; charset=utf-8');
         header('Content-Type: ' . $this->contentType);
         header('HTTP/1.1 ' . $this->statusCode);
         foreach ($this->headers as $header) {
