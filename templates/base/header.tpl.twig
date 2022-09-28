@@ -1,2 +1,7 @@
-<meta charset="UTF-8">
-<title>Racoon - {{ title }}</title>
+<nav class="menu-nav">
+    <ul>
+        {% for link in menuLinks %}
+            <li><a href="{{ link.link }}">{{ link.title }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>
