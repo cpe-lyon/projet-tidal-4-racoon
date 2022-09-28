@@ -8,6 +8,5 @@ use Helper\App\App;
 
 // On instancie la classe App
 $App = new App();
-$Context = new DB();
 
 $App->run();
