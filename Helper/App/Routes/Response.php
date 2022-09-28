@@ -8,7 +8,7 @@ use Helper\Twig\Page;
 
 
 /**
- * Class Response - Gère les réponses HTTP
+ * Class Response - Gères les réponses HTTP
  */
 class Response
 {
@@ -129,7 +129,7 @@ class Response
     }
 
     /**
-     * @return bool|string Constuit la réponse textuelle
+     * @return bool|string Construit la réponse textuelle
      */
     private function buildResponse(): bool|string
     {
