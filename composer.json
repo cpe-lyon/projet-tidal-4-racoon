@@ -3,6 +3,7 @@
         "twig/twig": "^3.4",
         "ext-pdo": "*",
       "ext-fileinfo": "*",
-        "symfony/asset": "^6.1"
+        "symfony/asset": "^6.1",
+        "dfridrich/php-mime-type": "^3.0"
     }
 }

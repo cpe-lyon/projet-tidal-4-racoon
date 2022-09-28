@@ -2,6 +2,7 @@
 
 namespace Helper\App\Routes;
 
+use Defr\PhpMimeType\MimeType;
 use Helper\App\Constant;
 use Helper\MVC\Controller;
 use Exception;
@@ -159,7 +160,7 @@ class Router
                 $filename = basename($attachment_location);
                 header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
                 header("Cache-Control: public"); // needed for internet explorer
-                header("Content-Type: " . mime_content_type($attachment_location));
+                header("Content-Type: " . MimeType::get($filename));
                 header("Content-Transfer-Encoding: Binary");
                 header("Content-Length:".filesize($attachment_location));
                 readfile($attachment_location);
