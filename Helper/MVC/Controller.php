@@ -91,4 +91,9 @@ class Controller
             return $default;
         }
     }
+
+    public function ping(): string
+    {
+        return 'pong';
+    }
 }

@@ -2,7 +2,6 @@
 
 use Helper\App\Routes\Router;
 use Helper\MVC\Controller;
-use Helper\MVC\HomeController;
 
 /*
  * -------------- FICHIER DE ROUTES --------------
@@ -29,9 +28,9 @@ use Helper\MVC\HomeController;
  *
  */
 
-/* VUE */
+/* API */
 
-Router::get('/error/@@', Controller::class, 'error');
-Router::get('/index.php', Controller::class, 'errorIndex');
-Router::get('/', HomeController::class, 'index');
-Router::get('/account/@@/rock/@@', HomeController::class, 'account');
+
+Router::group('/api', function (){
+    Router::get('/ping', Controller::class, 'ping');
+});

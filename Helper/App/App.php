@@ -51,6 +51,7 @@ class App
     private function initRoute(): void
     {
         require_once Constant::DIR_ROOT . 'routes/route.php';
+        require_once Constant::DIR_ROOT . 'routes/api.php';
     }
 
     /**
