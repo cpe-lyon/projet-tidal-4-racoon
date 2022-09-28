@@ -2,6 +2,10 @@
 
 namespace Helper\App;
 
+/* 
+ * Classe autoloader pour charger 
+ * automatiquement les fichiers des classes
+ */
 class Autoloader
 {
 
