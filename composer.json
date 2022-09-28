@@ -2,6 +2,7 @@
     "require": {
         "twig/twig": "^3.4",
         "ext-pdo": "*",
-      "ext-fileinfo": "*"
+      "ext-fileinfo": "*",
+        "symfony/asset": "^6.1"
     }
 }
