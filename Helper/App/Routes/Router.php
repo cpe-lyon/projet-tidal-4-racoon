@@ -162,7 +162,6 @@ class Router
                 header("Content-Type: " . mime_content_type($attachment_location));
                 header("Content-Transfer-Encoding: Binary");
                 header("Content-Length:".filesize($attachment_location));
-                header("Content-Disposition: attachment; filename=$filename");
                 readfile($attachment_location);
                 die();
             }
