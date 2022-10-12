@@ -38,3 +38,5 @@ Router::get('/', HomeController::class, 'index');
 Router::get('/account/@@/rock/@@', HomeController::class, 'account');
 Router::get('/profil', ProfilController::class, 'profil');
 Router::post('/profil', ProfilController::class, 'profil');
+Router::post('/register', ProfilController::class, 'register');
+Router::post('/login', ProfilController::class, 'login');

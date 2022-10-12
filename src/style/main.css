@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&display=swap");
 body {
-  font-family: "Noto Sans", sans-serif;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 body {
@@ -27,10 +27,82 @@ body {
 
 .row {
   display: inline-block;
-  align-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+}
+
+.no-profil {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  font-family: Noto Sans, Roboto, Helvetica, sans-serif;
+  background-color: #ecebeb;
+}
+
+.no-profil__login-btn {
+  width: 50%;
+  margin-top: 32px;
+  margin-bottom: 8px;
+  padding: 5px;
+  border: 0;
+  border-radius: 15px;
+  background-color: #fff;
+  color: #393939;
+  font-size: 25px;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  outline: 0;
+  cursor: pointer;
+}
+
+.no-profil__login-btn:hover {
+  background-color: #fafafa;
+  -webkit-box-shadow: 0px 0px 20px #95959540;
+          box-shadow: 0px 0px 20px #95959540;
+}
+
+.no-profil__login-btn:active {
+  background-color: whitesmoke;
+  -webkit-box-shadow: 0px 0px 20px #95959540;
+          box-shadow: 0px 0px 20px #95959540;
+}
+
+.no-profil__register {
+  color: #393939;
+}
+
+.no-profil__link {
+  color: #3a767d;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.no-profil__link:hover {
+  color: #2a555a;
+  text-decoration: underline;
+}
+
+.no-profil__link:active {
+  color: #1a3437;
+  text-decoration: underline;
 }
 
 .logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 150px;
   margin: auto;
@@ -50,18 +122,29 @@ select {
 }
 
 .search-bar {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin: 0 auto;
   width: 50%;
   height: 100%;
   background-color: #f5f5f5;
   border-radius: 30px;
   padding: 10px 10px;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
+
 .search-bar .search-input {
   width: 100%;
   height: 100%;
@@ -71,8 +154,10 @@ select {
   font-size: 18px;
   color: #333;
   padding: 0 10px;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
+
 .search-bar .search-btn {
   width: 30px;
   height: 30px;
@@ -82,10 +167,12 @@ select {
   margin: 0 5px;
   cursor: pointer;
 }
+
 .search-bar .search-btn .iconfont {
   font-size: 20px;
   color: #333;
 }
+
 .search-bar :nth-child(n+4) {
   margin-right: 20px;
 }
@@ -94,5 +181,4 @@ select {
   width: 80vw;
   margin: auto;
 }
-
 /*# sourceMappingURL=main.css.map */
