@@ -6,8 +6,11 @@
   height: 100vh;
   width: 100%;
   font-family: Noto Sans, Roboto, Helvetica, sans-serif;
+  background-color: #ecebeb;
 
   &__logo {
+    width: 200px;
+    height: auto;
   }
 
   &__login-btn {
@@ -20,7 +23,7 @@
     background-color: #fff;
     color: #393939;
     font-size: 25px;
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: none;
     text-align: center;
     outline: 0;

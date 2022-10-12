@@ -31,7 +31,7 @@ body {
       align-content: center;
 }
 
-.register {
+.profile-form {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -44,9 +44,10 @@ body {
   width: 100%;
   min-height: 100vh;
   background-color: #ecebeb;
+  font-family: "Noto sans";
 }
 
-.register__form {
+.profile-form__container {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 600px;
@@ -55,7 +56,7 @@ body {
   background-color: #fff;
 }
 
-.register__form::before {
+.profile-form__container::before {
   display: block;
   position: relative;
   top: -32px;
@@ -65,6 +66,36 @@ body {
   border-radius: 20px 20px 0 0;
   background-color: #3a767d;
   content: "";
+}
+
+.profile-form__input {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #b7b7b7;
+  border-radius: 10px;
+  padding: 4px 16px;
+  background: #fff;
+  font-size: 16px;
+  font-family: "Noto sans";
+  outline: none;
+}
+
+.profile-form__input:focus {
+  border: 1.5px solid #848484;
+}
+
+.profile-form__submit-btn {
+  padding: 8px 64px;
+  border: 0;
+  border-radius: 16px;
+  background-color: #3a767d;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  outline: 0;
+  cursor: pointer;
 }
 
 .register__form-head {
@@ -100,7 +131,7 @@ body {
           flex-direction: column;
   row-gap: 16px;
   width: 100%;
-  margin-bottom: 32px;
+  margin-bottom: 64px;
 }
 
 .register__form-foot {
@@ -122,34 +153,32 @@ body {
   background-color: #3a767d;
 }
 
-.register__input {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+.login__form-main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  row-gap: 16px;
   width: 100%;
-  border: 1px solid #b7b7b7;
-  border-radius: 10px;
-  padding: 4px 16px;
-  background: #fff;
-  font-size: 16px;
-  font-family: "Noto sans";
-  outline: none;
+  margin-bottom: 32px;
 }
 
-.register__input:focus {
-  border: 1.5px solid #848484;
+.login__form-foot {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
 }
 
-.register__submit-btn {
-  padding: 8px 64px;
-  border: 0;
-  border-radius: 16px;
-  background-color: #3a767d;
-  color: #fff;
+.login__form .profile-form__input {
   font-size: 20px;
-  font-weight: 600;
-  text-decoration: none;
-  outline: 0;
-  cursor: pointer;
+  text-align: center;
 }
 
 .no-profil {
@@ -169,6 +198,12 @@ body {
   height: 100vh;
   width: 100%;
   font-family: Noto Sans, Roboto, Helvetica, sans-serif;
+  background-color: #ecebeb;
+}
+
+.no-profil__logo {
+  width: 200px;
+  height: auto;
 }
 
 .no-profil__login-btn {
@@ -181,7 +216,7 @@ body {
   background-color: #fff;
   color: #393939;
   font-size: 25px;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
   text-align: center;
   outline: 0;

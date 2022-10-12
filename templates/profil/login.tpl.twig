@@ -1,2 +1,31 @@
-<h1>Se connecter</h1>
-<p>Formulaire de connexion pour un utilisateur connu</p>
+{% extends "base/base.tpl.twig" %}
+
+{% block body %}
+
+{% if isConnected %}
+
+{# Redirect vers profil #}
+
+{% else %}
+
+<div class="profile-form">
+
+<form class="profile-form__container login__form" action="" method="POST">
+
+    <div class="login__form-main">
+        <input type="email" name="mail" id="" class="profile-form__input" placeholder="Mail" required>
+
+        <input type="password" name="password" id="" class="profile-form__input" placeholder="Mot de passe" required>
+    </div>
+
+    <div class="login__form-foot">
+        <button class="profile-form__submit-btn" type="submit">Connexion</button>
+    </div>
+
+</form>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

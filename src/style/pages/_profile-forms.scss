@@ -1,12 +1,13 @@
-.register {
+.profile-form {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   min-height: 100vh;
   background-color: #ecebeb;
+  font-family: "Noto sans";
 
-  &__form {
+  &__container {
     box-sizing: border-box;
     width: 600px;
     padding: 32px 64px;
@@ -24,43 +25,6 @@
       background-color: #3a767d;
       content: "";
     }
-
-    &-head {
-      display: flex;
-      width: 100%;
-      margin-bottom: 32px;
-    }
-
-    &-names {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      row-gap: 16px;
-      width: 100%;
-    }
-
-    &-main {
-      display: flex;
-      flex-direction: column;
-      row-gap: 16px;
-      width: 100%;
-      margin-bottom: 32px;
-    }
-
-    &-foot {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-    }
-  }
-
-  &__picture {
-    display: block;
-    width: 150px;
-    height: 150px;
-    margin-right: 32px;
-    border-radius: 150px;
-    background-color: #3a767d;
   }
 
   &__input {
@@ -90,5 +54,67 @@
     text-decoration: none;
     outline: 0;
     cursor: pointer;
+  }
+}
+
+.register {
+  &__form {
+    &-head {
+      display: flex;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    &-names {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 16px;
+      width: 100%;
+    }
+
+    &-main {
+      display: flex;
+      flex-direction: column;
+      row-gap: 16px;
+      width: 100%;
+      margin-bottom: 64px;
+    }
+
+    &-foot {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  &__picture {
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin-right: 32px;
+    border-radius: 150px;
+    background-color: #3a767d;
+  }
+}
+
+.login__form {
+  &-main {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    width: 100%;
+    margin-bottom: 32px;
+  }
+
+  &-foot {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .profile-form__input {
+    font-size: 20px;
+    text-align: center;
   }
 }
