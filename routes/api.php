@@ -2,6 +2,7 @@
 
 use Helper\App\Routes\Router;
 use Helper\MVC\Controller;
+use Helper\MVC\MenuController;
 
 /*
  * -------------- FICHIER DE ROUTES --------------
@@ -33,4 +34,5 @@ use Helper\MVC\Controller;
 
 Router::group('/api', function (){
     Router::get('/ping', Controller::class, 'ping');
+    Router::get('/menu/account', MenuController::class, 'account');
 });
