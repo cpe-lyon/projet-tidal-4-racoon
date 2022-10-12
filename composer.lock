@@ -4,8 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ab5d3cbb5544ba76a87b8eed659f71b",
+    "content-hash": "efda843982174e36991aaf3b8106aa7b",
     "packages": [
+        {
+            "name": "dfridrich/php-mime-type",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dfridrich/PhpMimeType.git",
+                "reference": "8f4725db463b579067c564b067ad7f362e9f4cf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dfridrich/PhpMimeType/zipball/8f4725db463b579067c564b067ad7f362e9f4cf4",
+                "reference": "8f4725db463b579067c564b067ad7f362e9f4cf4",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9",
+                "symfony/http-foundation": "^4.4|^5.0|^6.0"
+            },
+            "suggest": {
+                "symfony/http-foundation": "Allows you to get prepared Symfony response."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Defr\\": "legacy/",
+                    "Defr\\PhpMimeType\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dennis Fridrich",
+                    "email": "fridrich.dennis@gmail.com"
+                }
+            ],
+            "description": "Simple PHP class for guessing file mime type based on file extension with ability to use in Symfony project.",
+            "homepage": "https://github.com/dfridrich/PhpMimeType",
+            "keywords": [
+                "mimetype",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/dfridrich/PhpMimeType/issues",
+                "source": "https://github.com/dfridrich/PhpMimeType/tree/v3.0.0"
+            },
+            "time": "2022-06-21T22:18:48+00:00"
+        },
         {
             "name": "symfony/asset",
             "version": "v6.1.0",

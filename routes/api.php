@@ -2,8 +2,7 @@
 
 use Helper\App\Routes\Router;
 use Helper\MVC\Controller;
-use Helper\MVC\HomeController;
-use Helper\MVC\ProfilController;
+use Helper\MVC\MenuController;
 
 /*
  * -------------- FICHIER DE ROUTES --------------
@@ -30,11 +29,10 @@ use Helper\MVC\ProfilController;
  *
  */
 
-/* VUE */
+/* API */
 
-Router::get('/error/@@', Controller::class, 'error');
-Router::get('/index.php', Controller::class, 'errorIndex');
-Router::get('/', HomeController::class, 'index');
-Router::get('/account/@@/rock/@@', HomeController::class, 'account');
-Router::get('/profil', ProfilController::class, 'profil');
-Router::post('/profil', ProfilController::class, 'profil');
+
+Router::group('/api', function (){
+    Router::get('/ping', Controller::class, 'ping');
+    Router::get('/menu/account', MenuController::class, 'account');
+});

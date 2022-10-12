@@ -2,6 +2,7 @@
 
 namespace Helper\App\Routes;
 
+use Defr\PhpMimeType\MimeType;
 use Helper\App\Constant;
 use Helper\MVC\Controller;
 use Exception;
@@ -17,6 +18,7 @@ class Router
     const METHOD_DELETE = 'DELETE';
 
     static private ?Router $router = null;
+    static private string $prefix = '';
 
     private array $routesGET;
     private array $routesPOST;
@@ -90,7 +92,7 @@ class Router
      */
     public function registerGet(string $route, string $controller, string $action): void
     {
-        $this->routesGET[$route] = new Route($route, $controller, $action, 'GET');
+        $this->routesGET[self::$prefix . $route] = new Route(self::$prefix . $route, $controller, $action, 'GET');
     }
 
     /*
@@ -98,7 +100,7 @@ class Router
      */
     public function registerPost(string $route, string $controller, string $action): void
     {
-        $this->routesPOST[$route] = new Route($route, $controller, $action, 'POST');
+        $this->routesPOST[self::$prefix . $route] = new Route(self::$prefix . $route, $controller, $action, 'POST');
     }
 
     /*
@@ -106,7 +108,7 @@ class Router
      */
     public function registerPut(string $route, string $controller, string $action): void
     {
-        $this->routesPUT[$route] = new Route($route, $controller, $action, 'PUT');
+        $this->routesPUT[self::$prefix . $route] = new Route(self::$prefix . $route, $controller, $action, 'PUT');
     }
 
     /*
@@ -114,7 +116,7 @@ class Router
      */
     public function registerDelete(string $route, string $controller, string $action): void
     {
-        $this->routesDELETE[$route] = new Route($route, $controller, $action, 'DELETE');
+        $this->routesDELETE[self::$prefix . $route] = new Route(self::$prefix . $route, $controller, $action, 'DELETE');
     }
 
     /*
@@ -158,10 +160,9 @@ class Router
                 $filename = basename($attachment_location);
                 header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
                 header("Cache-Control: public"); // needed for internet explorer
-                header("Content-Type: " . mime_content_type($attachment_location));
+                header("Content-Type: " . MimeType::get($filename));
                 header("Content-Transfer-Encoding: Binary");
                 header("Content-Length:".filesize($attachment_location));
-                header("Content-Disposition: attachment; filename=$filename");
                 readfile($attachment_location);
                 die();
             }
@@ -193,6 +194,14 @@ class Router
             (new Controller())->redirect(substr($this->route, 0, -1));
         }
         return $this->route;
+    }
+
+    public static function group(string $prefix, callable $routes):void
+    {
+        $savePrefix = self::$prefix;
+        self::$prefix = self::$prefix . $prefix;
+        $routes();
+        self::$prefix = $savePrefix;
     }
 
     /**
