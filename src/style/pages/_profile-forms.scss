@@ -27,10 +27,16 @@
     }
   }
 
+  &__line {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+  }
+
   &__input {
     box-sizing: border-box;
     width: 100%;
-    border: 1px solid #b7b7b7;
+    border: 1.5px solid #b7b7b7;
     border-radius: 10px;
     padding: 4px 16px;
     background: #fff;
@@ -41,6 +47,21 @@
     &:focus {
       border: 1.5px solid darken(#b7b7b7, 20);
     }
+
+    &.--error {
+      border: 1.5px solid #ba1a1a;
+      background: #fff2f2;
+
+      &:focus {
+        border: 1.5px solid darken(#ba1a1a, 10);
+      }
+    }
+  }
+
+  &__error {
+    margin: 0;
+    font-size: 13px;
+    color: #ba1a1a;
   }
 
   &__submit-btn {

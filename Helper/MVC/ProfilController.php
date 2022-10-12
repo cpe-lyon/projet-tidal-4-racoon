@@ -8,15 +8,8 @@ class ProfilController extends Controller
 {
     public bool $isConnected = false;
 
-    // À l'arrivée sur cette page, check si un user est connecté
-    // -> Si oui : Page de profil
-    // -> Si non : Page du choix de la connexion
     public function profile(): Page
     {
-        if (!empty($_POST)) {
-            $this->checkFormSubmission();
-        }
-
         $params = [
             'isConnected' => $this->isConnected
         ];
@@ -26,22 +19,29 @@ class ProfilController extends Controller
 
     public function register(): Page
     {
+        if (!empty($_POST)) {
+            $this->checkRegisterForm();
+        }
+
         return new Page('profil/register.tpl.twig');
     }
 
     public function login(): Page
     {
+        if (!empty($_POST)) {
+            $this->checkLoginForm();
+        }
+
         return new Page('profil/login.tpl.twig');
     }
 
-    protected function checkFormSubmission(): void
+    protected function checkRegisterForm(): void
     {
-        // Traitement connexion
+        // Traitement inscription
     }
 
-
-    protected function redirectTo(string $url): void
+    protected function checkLoginForm(): void
     {
-        $this->isConnected = true;
+        // Traitement connexion
     }
 }
