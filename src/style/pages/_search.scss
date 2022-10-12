@@ -63,4 +63,37 @@ select {
 .table-container {
   width: 80vw;
   margin: auto;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.tab-header {
+  background-color: $primary;
+  width: 100%;
+  color: white;
+  th {
+    padding: 5px;
+  }
+  :nth-child(1) {
+    border-radius: 20px 0 0 0;
+  }
+  :last-of-type {
+    border-radius: 0 20px 0 0;
+  }
+}
+
+table {
+  border-spacing: 0;
+
+  td {
+    padding: 10px;
+  }
+}
+
+.btn {
+  color: $primary;
+
+  :hover {
+    color: $secondary;
+  }
 }

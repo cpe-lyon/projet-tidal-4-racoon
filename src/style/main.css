@@ -10,6 +10,12 @@ body {
   background-color: #ecebeb;
 }
 
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 .badge {
   background-color: #3A767D;
   color: #fff;
@@ -23,6 +29,12 @@ body {
   vertical-align: baseline;
   display: inline-block;
   margin: 10px auto;
+}
+.badge button {
+  color: white;
+}
+.badge button :hover {
+  color: #d7df23;
 }
 
 .row {
@@ -541,6 +553,37 @@ select {
 .table-container {
   width: 80vw;
   margin: auto;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.tab-header {
+  background-color: #3A767D;
+  width: 100%;
+  color: white;
+}
+.tab-header th {
+  padding: 5px;
+}
+.tab-header :nth-child(1) {
+  border-radius: 20px 0 0 0;
+}
+.tab-header :last-of-type {
+  border-radius: 0 20px 0 0;
+}
+
+table {
+  border-spacing: 0;
+}
+table td {
+  padding: 10px;
+}
+
+.btn {
+  color: #3A767D;
+}
+.btn :hover {
+  color: #d7df23;
 }
 
 .menu-nav {
