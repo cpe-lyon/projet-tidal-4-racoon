@@ -1,0 +1,42 @@
+{% extends "base/base.tpl.twig" %}
+
+{% block body %}
+
+{% if isConnected %}
+
+{# Redirect vers profil #}
+
+{% else %}
+
+<div class="register">
+
+<form class="register__form" action="" method="POST">
+
+    <div class="register__form-head">
+
+        <div>
+            <div class="register__picture"></div>
+        </div>
+
+        <div class="register__form-names">
+            <input type="text" name="first-name" id="" class="register__input" required>
+            <input type="text" name="last-name" id="" class="register__input" required>
+            <input type="text" name="username" id="" class="register__input" required>
+        </div>
+    </div>
+
+    <input type="email" name="mail" id="" class="register__input" required>
+    <input type="email" name="mail-confirm" id="" class="register__input" required>
+
+    <input type="password" name="password" id="" class="register__input" required>
+    <input type="password" name="password-confirm" id="" class="register__input" required>
+
+    <button class="register__submit-btn" type="submit">M'inscrire</button>
+
+</form>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
