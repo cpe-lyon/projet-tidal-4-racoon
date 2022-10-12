@@ -29,10 +29,9 @@ class Controller
         $this->redirect('/');
     }
 
-    public function error(array $params): Page
+    public function error(string $errorCode): Page
     {
-        $error = $this->urlInput($params, 0);
-        switch ($error) {
+        switch ($errorCode) {
             case HTTP::NOT_FOUND:
                 $this->params = [
                     'title' => 'Error 404',
@@ -91,5 +90,10 @@ class Controller
         } else {
             return $default;
         }
+    }
+
+    public function ping(): string
+    {
+        return 'pong';
     }
 }
