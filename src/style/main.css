@@ -16,27 +16,6 @@ button {
   cursor: pointer;
 }
 
-.badge {
-  background-color: #3A767D;
-  color: #fff;
-  padding: 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  display: inline-block;
-  margin: 10px auto;
-}
-.badge button {
-  color: white;
-}
-.badge button :hover {
-  color: #d7df23;
-}
-
 .row {
   display: inline-block;
   -ms-flex-line-pack: center;
@@ -490,8 +469,31 @@ select {
 }
 
 .search-badges {
-  width: 70vh;
+  width: 80vw;
   margin: auto;
+  min-height: 30px;
+}
+
+.badge {
+  background-color: #3A767D;
+  color: whitesmoke;
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  display: inline-block;
+  margin: 10px 5px 10px auto;
+}
+.badge button {
+  color: white;
+}
+.badge button :hover {
+  color: #d7df23;
 }
 
 .search-bar {
@@ -530,7 +532,9 @@ select {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
-
+.search-bar .search-input ::after {
+  border: none;
+}
 .search-bar .search-btn {
   width: 30px;
   height: 30px;
