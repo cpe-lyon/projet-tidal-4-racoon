@@ -2,7 +2,7 @@
 
 namespace Helper\App;
 
-use Helper\Models\Condition;
+use App\MVC\Model\Condition;
 use PDO;
 
 /**
