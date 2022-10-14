@@ -6,12 +6,17 @@ use Helper\Twig\Page;
 
 class ProfilController extends Controller
 {
-    public bool $isConnected = false;
+    public bool $isConnected = true;
+    public bool $profileEditing = false;
+    public bool $passwordEditing = true;
 
     public function profile(): Page
     {
         $params = [
-            'isConnected' => $this->isConnected
+            'isConnected' => $this->isConnected,
+            'profileEditing' => $this->profileEditing,
+            'passwordEditing' => $this->passwordEditing,
+            'handlePassordEdit' => $this->handlePassordEdit()
         ];
 
         return new Page('profil/profil.tpl.twig', $params);
@@ -43,5 +48,15 @@ class ProfilController extends Controller
     protected function checkLoginForm(): void
     {
         // Traitement connexion
+    }
+
+    protected function handleProfileEdit(): void
+    {
+        $this->profileEditing = $this->profileEditing ? false : true;
+    }
+
+    protected function handlePassordEdit(): void
+    {
+        $this->passwordEditing = $this->passwordEditing ? false : true;
     }
 }

@@ -4,9 +4,15 @@
 
 {% if isConnected %}
 
+
+
 <div class="profile-container">
 
 <div class="profile">
+
+    {% if profileEditing %}
+
+    {% else %}
 
     <div class="profile-header">
         <img class="profile__picture" src="" alt="Phot de profil">
@@ -25,13 +31,13 @@
         </div>
 
         <div class="profile__actions">
-            <span class="profile__action-line">
+            <span onclick="profileEditing" class="profile__action-line">
                 <div class="profile__action-icon"></div>
                 <p class="profile__action-title">Editer mon profil</p>
             </span>
-            <span class="profile__action-line">
+            <span onclick="{{ handlePassordEdit }}" class="profile__action-line">
                 <div class="profile__action-icon"></div>
-                <p class="profile__action-title">Modifier mon mot de passe</p>
+                <p class="profile__action-title">Modifier mon mot de passe - {{ passwordEditing }}</p>
             </span>
             <span class="profile__action-line">
                 <div class="profile__action-icon"></div>
@@ -44,6 +50,16 @@
         <p>Copyright</p>
         <p>Blablabla</p>
     </div>
+       
+        {% if passwordEditing %}
+
+        <div class="pwd-edit__container">
+            <div class="pwd-edit">PWD</div>
+        </div>
+
+        {% endif %}
+
+    {% endif %}
 
 </div>
 
