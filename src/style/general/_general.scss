@@ -8,13 +8,12 @@ menu {
 
 .badge {
   background-color: $primary;
-  color: whitesmoke;
+  color: #fff;
   padding: 10px;
   border-radius: 20px;
   font-size: 14px;
   font-weight: bold;
   line-height: 1;
-  color: #fff;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -25,4 +24,22 @@ menu {
 .row {
   display: inline-block;
   align-content: center;
+}
+
+.icon {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  img, svg {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.hidden {
+  display: none;
 }
