@@ -3,6 +3,7 @@
 use Helper\App\Routes\Router;
 use Helper\MVC\Controller;
 use Helper\MVC\HomeController;
+use Helper\MVC\TestController;
 use Helper\MVC\ProfilController;
 
 /*
@@ -36,6 +37,7 @@ Router::get('/error/@@', Controller::class, 'error');
 Router::get('/index.php', Controller::class, 'errorIndex');
 Router::get('/', HomeController::class, 'index');
 Router::get('/account/@@/rock/@@', HomeController::class, 'account');
+Router::get('/test', TestController::class, 'index');
 Router::get('/profil', ProfilController::class, 'profile');
 Router::post('/profil', ProfilController::class, 'profile');
 Router::get('/inscription', ProfilController::class, 'register');
