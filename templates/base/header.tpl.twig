@@ -1,7 +1,11 @@
 <nav class="menu-nav">
-    <ul>
+    {{ include('component/icon.twig', {icon: 'menu', classes: ['menu-nav-icon']}) }}
+    <ul class="menu-nav-content">
+        {% set menuLinks = [
+            {link: '/profil', title: 'Profil',   icon: include('component/icon.twig', {icon: 'person', classes: ['menu-nav-content-icon']})},
+            {link: '/about',  title: 'À propos', icon: include('component/icon.twig', {icon: 'info', classes: ['menu-nav-content-icon']})}] %}
         {% for link in menuLinks %}
-            <li><a href="{{ link.link }}">{{ link.title }}</a></li>
+            <li><a href="{{ link.link }}">{{ link.icon|raw }}{{ link.title }}</a></li>
         {% endfor %}
     </ul>
 </nav>
