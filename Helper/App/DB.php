@@ -116,9 +116,9 @@ class DB
      * $❤️ = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
      * ```
      * 
-     * @param class @classLeft La classe de la jointure à gauche
-     * @param class @classRight La classe de la jointure à droite
-     * @param class @classJoin La classe faisant la jointure entre les deux classes
+     * @param string $classLeft La classe de la jointure à gauche
+     * @param string $classRight La classe de la jointure à droite
+     * @param string $classJoin La classe faisant la jointure entre les deux classes
      * @param Condition[] $conditions La liste des conditions pour filtrer le resultat
      * 
      * @return array|false Le resultat de fetchAll PDO formatté sous forme d'objet
@@ -166,8 +166,8 @@ class DB
      *  $Context->getAll(Keyword::class, [new Condition("idk", 5)])
      * ```
      * 
-     * @param mixed @table  Soit la classe passée en parametre (`Foo::class`) ou son nom en toutes lettres (`"Foo"`)
-     * @param Condition[] @conditions   La liste des conditions à remplir pour filtrer l'objet `[new Condition("id1", "5")]`
+     * @param string $table  Soit la classe passée en parametre (`Foo::class`) ou son nom en toutes lettres (`"Foo"`)
+     * @param Condition[] $conditions   La liste des conditions à remplir pour filtrer l'objet `[new Condition("id1", "5")]`
      * 
      * @return mixed Retourne le resultat parsé sous forme d'objet PDO ou sous forme de classe si précisée.
      */
@@ -416,7 +416,7 @@ class DB
      * 
      * @return string Le nom de la table SQL
      */
-    private function parseTableName($table)
+    private function parseTableName(string $table): string
     {
         $temp = explode('\\', $table);
         return end($temp);

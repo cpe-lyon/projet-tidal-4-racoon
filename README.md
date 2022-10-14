@@ -11,7 +11,14 @@
 composer install
 ```
 
+```bash
+bash ./init.sh
+```
+
 ## launch
+You need to have a postgresql database running on your computer
+
+Use this command to launch php server
 ```bash
 php -S localhost:8000 -t public
 ```

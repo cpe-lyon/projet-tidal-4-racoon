@@ -3,13 +3,6 @@
 namespace Helper\MVC;
 
 use Helper\App\DB;
-use Helper\Models\Condition;
-use Helper\Models\KeySympt;
-use Helper\Models\Keywords;
-use Helper\Models\Meridien;
-use Helper\Models\Symptome;
-use Helper\Models\SymptPatho;
-
 use Helper\Twig\Page;
 
 class TestController extends Controller
@@ -23,59 +16,59 @@ class TestController extends Controller
 
 
 
-//        $❤️ = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
-//        var_dump($❤️[1]);
-        //$🤔 = $Context->getAll(Meridien::class);
-        //var_dump(end($🤔));
+//        $query = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
+//        var_dump($query[1]);
+//        $request = $Context->getAll(Meridien::class);
+//        var_dump(end($request));
 
-        // $m = new Meridien();
-        // $m->code = "A";
-        // $m->nom = "aaa";
-        // $m->element = "b";
-        // $m->yin = true;
-        //$a = $Context->insert($m);
-        //var_dump($a);
+//         $m = new Meridien();
+//         $m->code = "A";
+//         $m->nom = "aaa";
+//         $m->element = "b";
+//         $m->yin = true;
+//        $a = $Context->insert($m);
+//        var_dump($a);
 
-        // $🤔 = $Context->getAll(Meridien::class);
-        // var_dump(end($🤔));
+//         $request = $Context->getAll(Meridien::class);
+//         var_dump(end($request));
 
-        // $m->element = "a";
-        // $a = $Context->update($m);
-        // var_dump($a);
+//         $m->element = "a";
+//         $a = $Context->update($m);
+//         var_dump($a);
 
-        // $🤔 = $Context->getAll(Meridien::class);
-        // var_dump(end($🤔));
+//         $request = $Context->getAll(Meridien::class);
+//         var_dump(end($request));
 
-        // $🤔 = $Context->getAll(SymptPatho::class);
-        // var_dump(end($🤔));
+//         $request = $Context->getAll(SymptPatho::class);
+//         var_dump(end($request));
 
-        // $s = new SymptPatho();
-        // $s->ids = 448;
-        // $s->idp = 113;
-        // $s->aggr = false;
+//         $s = new SymptPatho();
+//         $s->ids = 448;
+//         $s->idp = 113;
+//         $s->aggr = false;
 
-        // $a = $Context->update($s, array("ids", "idp"));
-        // var_dump($a);
+//         $a = $Context->update($s, array("ids", "idp"));
+//         var_dump($a);
 
-        // $🤔 = $Context->getAll(SymptPatho::class);
-        // var_dump(end($🤔));
+//         $request = $Context->getAll(SymptPatho::class);
+//         var_dump(end($request));
 
 
 //
 //        $c = [new Condition("idk", 5)];
-//        $🤣 = $Context->getItem("keywords", $c);
-//        var_dump($🤣);
+//        $query = $Context->getItem("keywords", $c);
+//        var_dump($query);
 //
-////$c = [new Condition("element", "'f'"), new Condition("yin", "TRUE")]; //on créé une liste de filtres avec new Condition(clé, valeur) ou new Condition(clé, valeur, operateur)
+//        $c = [new Condition("element", "'f'"), new Condition("yin", "TRUE")]; //on créé une liste de filtres avec new Condition(clé, valeur) ou new Condition(clé, valeur, operateur)
 //        $c = [new Condition("element", "f"), new Condition("yin", true)];
-//        $🤣 = $Context->getItem("meridien", $c); //on fait ensuite la requete dans la table meridian avec la liste de conditions
-//        var_dump($🤣);
+//        $query = $Context->getItem("meridien", $c); //on fait ensuite la requete dans la table meridian avec la liste de conditions
+//        var_dump($query);
 //
-//        $🤔 = $Context->getAll("keywords");
-//        var_dump($🤔[5]);
+//        $request = $Context->getAll("keywords");
+//        var_dump($request[5]);
 //
-    //    $🤔 = $Context->getAll(Meridien::class);
-    //    var_dump($🤔);
+//        $request = $Context->getAll(Meridien::class);
+//        var_dump($request);
 //
 
         return new Page('test.tpl.twig', $this->params);
