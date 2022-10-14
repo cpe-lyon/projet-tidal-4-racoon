@@ -11,6 +11,34 @@
 <div class="profile">
 
     {% if profileEditing %}
+    
+    <div class="profile-header">
+        {# Class = profile-edit__picture #}
+        <img class="profile__picture" src="" alt="Phot de profil">
+    </div>
+
+    <div class="profile-main">
+
+        {# Class = profile-edit__username #}
+        <div class="profile__username">
+            <input type="text" name="" id="" class="profile-form__input" placeholder="Nom d'utilisateur">
+        </div>
+
+        {# Class = profile-edit__infos #}
+        <div class="profile__infos">
+            <input type="text" name="" id="" class="profile-form__input" placeholder="Prénom">
+            <input type="text" name="" id="" class="profile-form__input" placeholder="Nom">
+            <input type="text" name="" id="" class="profile-form__input" placeholder="Mail">
+            <input type="text" name="" id="" class="profile-form__input" placeholder="Confirmer le nouveau mail">
+        </div>
+
+    </div>
+
+    <div class="profile-footer">
+        <div class="login__form-foot">
+            <button class="profile-form__submit-btn" type="submit">Enregistrer</button>
+        </div>
+    </div>
 
     {% else %}
 
@@ -31,11 +59,11 @@
         </div>
 
         <div class="profile__actions">
-            <span onclick="profileEditing" class="profile__action-line">
+            <span class="profile__action-line">
                 <div class="profile__action-icon"></div>
                 <p class="profile__action-title">Editer mon profil</p>
             </span>
-            <span onclick="{{ handlePassordEdit }}" class="profile__action-line">
+            <span class="profile__action-line">
                 <div class="profile__action-icon"></div>
                 <p class="profile__action-title">Modifier mon mot de passe - {{ passwordEditing }}</p>
             </span>
@@ -54,7 +82,29 @@
         {% if passwordEditing %}
 
         <div class="pwd-edit__container">
-            <div class="pwd-edit">PWD</div>
+            <div class="pwd-edit profile-form__container">
+
+                <div class="login__form-main">
+
+                    <div class="profile-form__line">
+                        <input type="password" name="pwd-edit-old" id="pwdEditOld" class="profile-form__input" placeholder="Ancien mot de passe" required>
+                    </div>
+                    
+                    <div class="profile-form__line">
+                        <input type="password" name="pwd-edit-new" id="pwdEditNew" class="profile-form__input" placeholder="Nouveau mot de passe" required>
+                    </div>
+                    
+                    <div class="profile-form__line">
+                        <input type="password" name="pwd-edit-new" id="pwdEditNewConfirm" class="profile-form__input" placeholder="Confirmer le mot de passe" required>
+                    </div>
+
+                </div>
+                
+                <div class="login__form-foot">
+                    <button class="profile-form__submit-btn" type="submit"></button>
+                </div>
+            
+            </div>
         </div>
 
         {% endif %}
