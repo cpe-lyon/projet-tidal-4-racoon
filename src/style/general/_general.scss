@@ -5,19 +5,10 @@
   // font-size: 23px;
 }
 
-.badge {
-  background-color: $primary;
-  color: #fff;
-  padding: 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  display: inline-block;
-  margin: 10px auto;
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .row {
