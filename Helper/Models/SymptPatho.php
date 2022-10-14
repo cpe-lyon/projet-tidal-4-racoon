@@ -2,7 +2,7 @@
 
 namespace Helper\Models;
 
-class Keywords
+class SymptPatho
 {
     public int $ids;
     public int $idp;
