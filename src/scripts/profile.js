@@ -1,3 +1,5 @@
+// FICHIER TEMPORAIRE : Pour l'instant tout est commenté, mais ça changera dans les tâches suivantes
+
 // Pour chaque champ, ne pas autoriser le submit si :
 // - Un champ est vide
 // - Le mdp ou mail de confirmation n'est pas identique à l'original
@@ -5,6 +7,7 @@
 
 /***** CONNEXION *****/
 
+/*
 const loginMail = document.getElementById("loginMail");
 loginMail.addEventListener("focusout", handleInputFocusOut);
 // loginMail.classList.add("--error");
@@ -32,3 +35,5 @@ function handleInputFocusOut(event) {
   newP.classList.add("profile-form__error");
   this.insertAdjacentElement("afterend", newP);
 }
+
+*/
