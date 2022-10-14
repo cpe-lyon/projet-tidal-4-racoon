@@ -4,9 +4,25 @@ body {
 }
 
 menu {
-    background-color: $primary;
 }
 
-.container {
-  background-color: black;
+.badge {
+  background-color: $primary;
+  color: whitesmoke;
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  display: inline-block;
+  margin: 10px auto;
+}
+
+.row {
+  display: inline-block;
+  align-content: center;
 }
