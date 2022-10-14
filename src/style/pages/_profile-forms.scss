@@ -1,0 +1,149 @@
+.profile-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ecebeb;
+  font-family: "Noto sans";
+
+  &__container {
+    box-sizing: border-box;
+    width: 600px;
+    padding: 32px 64px;
+    border-radius: 20px;
+    background-color: #fff;
+
+    &::before {
+      display: block;
+      position: relative;
+      top: -32px;
+      left: -64px;
+      width: calc(100% + 128px);
+      height: 16px;
+      border-radius: 20px 20px 0 0;
+      background-color: #3a767d;
+      content: "";
+    }
+  }
+
+  &__line {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+  }
+
+  &__input {
+    box-sizing: border-box;
+    width: 100%;
+    border: 1.5px solid #b7b7b7;
+    border-radius: 10px;
+    padding: 4px 16px;
+    background: #fff;
+    font-size: 16px;
+    font-family: "Noto sans";
+    outline: none;
+
+    &:focus {
+      border: 1.5px solid darken(#b7b7b7, 20);
+    }
+
+    &.--error {
+      border: 1.5px solid #ba1a1a;
+      background: #fff2f2;
+
+      &:focus {
+        border: 1.5px solid darken(#ba1a1a, 10);
+      }
+    }
+  }
+
+  &__error {
+    margin: 0;
+    font-size: 13px;
+    color: #ba1a1a;
+  }
+
+  &__submit-btn {
+    padding: 8px 64px;
+    border: 0;
+    border-radius: 16px;
+    background-color: #3a767d;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    outline: 0;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0px 0px 10px #00000050;
+    }
+
+    &:active {
+      background-color: darken(#3a767d, 10);
+    }
+  }
+}
+
+.register {
+  &__form {
+    &-head {
+      display: flex;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    &-names {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 16px;
+      width: 100%;
+    }
+
+    &-main {
+      display: flex;
+      flex-direction: column;
+      row-gap: 16px;
+      width: 100%;
+      margin-bottom: 64px;
+    }
+
+    &-foot {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  &__picture {
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin-right: 32px;
+    border-radius: 150px;
+    background-color: #3a767d;
+  }
+}
+
+.login__form {
+  &-main {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    width: 100%;
+    margin-bottom: 32px;
+  }
+
+  &-foot {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .profile-form__input {
+    font-size: 20px;
+    text-align: center;
+  }
+}

@@ -5,7 +5,7 @@
   padding-bottom: 20px;
 }
 
-select {
+.filter-type {
   border: none;
   padding: 10px;
   border-radius: 10px;
@@ -13,8 +13,32 @@ select {
 }
 
 .search-badges {
-  width: 70vh;
+  width: 80vw;
   margin: auto;
+  min-height: 30px;
+}
+
+.filter-badge {
+  background-color: $primary;
+  color: whitesmoke;
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  display: inline-block;
+  margin: 10px 5px 10px auto;
+
+  button {
+    color: white;
+    :hover {
+      color: $secondary;
+    }
+  }
 }
 
 .search-bar {
@@ -39,6 +63,9 @@ select {
     color: #333;
     padding: 0 10px;
     box-sizing: border-box;
+    ::after {
+      border: none;
+    }
   }
   .search-btn {
     width: 30px;
@@ -63,4 +90,37 @@ select {
 .table-container {
   width: 80vw;
   margin: auto;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.tab-header {
+  background-color: $primary;
+  width: 100%;
+  color: white;
+  th {
+    padding: 5px;
+  }
+  :nth-child(1) {
+    border-radius: 20px 0 0 0;
+  }
+  :last-of-type {
+    border-radius: 0 20px 0 0;
+  }
+}
+
+table {
+  border-spacing: 0;
+
+  td {
+    padding: 10px;
+  }
+}
+
+.details-button {
+  color: $primary;
+
+  :hover {
+    color: $secondary;
+  }
 }

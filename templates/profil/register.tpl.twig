@@ -1,0 +1,42 @@
+{% extends "base/base.tpl.twig" %}
+
+{% block body %}
+
+<div class="profile-form">
+
+<form class="profile-form__container" action="" method="POST">
+
+    <div class="register__form-head">
+
+        <div>
+            <div class="register__picture"></div>
+        </div>
+
+        <div class="register__form-names">
+            <input type="text" name="first-name" id="pFirstName" class="profile-form__input" placeholder="Prénom" required>
+            <input type="text" name="last-name" id="pLastName" class="profile-form__input" placeholder="Nom" required>
+            <input type="text" name="username" id="pUsername" class="profile-form__input" placeholder="Nom d'utilisateur" required>
+        </div>
+    </div>
+
+    <div class="register__form-main">
+        <input type="email" name="mail" id="pMail" class="profile-form__input" placeholder="Mail" required>
+        <input type="email" name="mail-confirm" id="pMailConfirm" class="profile-form__input" placeholder="Confirmer le mail" required>
+
+        <input type="password" name="password" id="pPassword" class="profile-form__input" placeholder="Mot de passe" required>
+        <input type="password" name="password-confirm" id="pPasswordConfirm" class="profile-form__input"placeholder="Confirmer le mot de pasee" required>
+    </div>
+
+    <div class="register__form-foot">
+        <button class="profile-form__submit-btn" type="submit">Inscription</button>
+    </div>
+
+</form>
+
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="/src/scripts/profile.js"></script>
+{% endblock %}

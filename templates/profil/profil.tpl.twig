@@ -1,0 +1,72 @@
+{% extends "base/base.tpl.twig" %}
+
+{% block body %}
+
+{% if isConnected %}
+
+<div class="profile-container">
+
+<div class="profile">
+
+    <div class="profile-header">
+        <img class="profile__picture" src="" alt="Phot de profil">
+    </div>
+
+    <div class="profile-main">
+        <div class="profile__username">
+            <p>Username</p>
+        </div>
+
+        <div class="profile__infos">
+            <p class="profile__infos-line">Prénom</p>
+            <p class="profile__infos-line">Nom</p>
+            <p class="profile__infos-line">Mail</p>
+            <p class="profile__creation-date">Membre depuis Mai 2022</p>
+        </div>
+
+        <div class="profile__actions">
+            <span class="profile__action-line">
+                <div class="profile__action-icon"></div>
+                <p class="profile__action-title">Editer mon profil</p>
+            </span>
+            <span class="profile__action-line">
+                <div class="profile__action-icon"></div>
+                <p class="profile__action-title">Modifier mon mot de passe</p>
+            </span>
+            <span class="profile__action-line">
+                <div class="profile__action-icon"></div>
+                <p class="profile__action-title">Déconnexion</p>
+            </span>
+        </div>
+    </div>
+
+    <div class="profile-footer">
+        <p>Copyright</p>
+        <p>Blablabla</p>
+    </div>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="no-profil">
+
+    <img class="no-profil__logo" src="src/img/logo.png" alt="Logo A.A.A.">
+
+    <button onclick="window.location.href = '/connexion'" class="no-profil__login-btn">Se connecter</button>
+
+    <div class="no-profil__register">
+        <p>
+            Pas encore membre ?
+            <span onclick="window.location.href = '/inscription'" class="no-profil__link">S'inscrire maintenant!</a>
+        </p>
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
+
