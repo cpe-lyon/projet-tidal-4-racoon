@@ -14,11 +14,10 @@
 
     <div class="login__form-main">
         <div class="profile-form__line">
-            <input type="email" name="mail" id="" class="profile-form__input --error" placeholder="Mail" required>
-            <p class="profile-form__error">Erreur !</p>
+            <input type="text" name="mail" id="loginMail" class="profile-form__input" placeholder="Mail" required>
         </div>
 
-        <input type="password" name="password" id="" class="profile-form__input" placeholder="Mot de passe" required>
+        <input type="password" name="password" id="loginPassword" class="profile-form__input" placeholder="Mot de passe" required>
     </div>
 
     <div class="login__form-foot">
@@ -31,4 +30,8 @@
 
 {% endif %}
 
+{% endblock %}
+
+{% block javascripts %}
+<script src="/src/scripts/profile.js"></script>
 {% endblock %}
