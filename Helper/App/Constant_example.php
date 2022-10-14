@@ -7,12 +7,12 @@ namespace Helper\App;
  */
 class Constant_Example
 {
-    const DEBUG = true;
+    const DEBUG = 'debugvalue';
 
     const DB_HOST = 'localhost';
-    const DB_NAME = 'db';
-    const DB_USER = 'user';
-    const DB_PASS = 'thisIsPassword';
+    const DB_NAME = 'yourdbname';
+    const DB_USER = 'yourdbuser';
+    const DB_PASS = 'yourdbpass';
     const DB_DSN = 'pgsql:host=' . self::DB_HOST . ';dbname=' . self::DB_NAME;
 
     const DIR_ROOT = __DIR__ . '/../../';

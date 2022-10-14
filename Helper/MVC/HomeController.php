@@ -8,15 +8,7 @@ class HomeController extends Controller
 {
     public function index(): Page
     {
-        $this->params = [
-            'title' => 'Home',
-            'name' => 'John Doe',
-            'items' => [
-                'item1',
-                'item2',
-                'item3',
-            ],
-        ];
+        $this->params = [];
         return new Page('home.tpl.twig', $this->params);
     }
 
