@@ -17,7 +17,7 @@ class HomeCtrl {
         document.getElementById('filter-btn').onclick = function () {
             var filterContent = document.getElementById('search');
             const badgeList = document.getElementById('search-badges');
-            badgeList.insertAdjacentHTML('afterbegin', '<div class="badge" id="' + filterContent.value + '">' +
+            badgeList.insertAdjacentHTML('afterbegin', '<div class="filter-badge" id="' + filterContent.value + '">' +
                 '       <span>' + filterContent.value + '</span>\n' +
                 '            <button type="button" onclick="deleteFilter(\'' + filterContent.value + '\')">\n' +
                 '                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">\n' +

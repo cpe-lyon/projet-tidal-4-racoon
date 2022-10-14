@@ -5,7 +5,7 @@
   padding-bottom: 20px;
 }
 
-select {
+.filter-type {
   border: none;
   padding: 10px;
   border-radius: 10px;
@@ -18,7 +18,7 @@ select {
   min-height: 30px;
 }
 
-.badge {
+.filter-badge {
   background-color: $primary;
   color: whitesmoke;
   padding: 10px;
@@ -117,7 +117,7 @@ table {
   }
 }
 
-.btn {
+.details-button {
   color: $primary;
 
   :hover {
