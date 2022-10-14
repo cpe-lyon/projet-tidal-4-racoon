@@ -6,7 +6,7 @@ use Helper\Twig\Page;
 
 class ProfilController extends Controller
 {
-    public bool $isConnected = false;
+    public bool $isConnected = true;
 
     public function profile(): Page
     {

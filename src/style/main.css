@@ -4,9 +4,10 @@ body {
   font-family: 'Noto Sans', sans-serif;
 }
 
-body {
+#body {
+  width: 100%;
+  height: 100vh;
   background-color: #ecebeb;
-  font-size: 23px;
 }
 
 .badge {
@@ -124,6 +125,15 @@ body {
   cursor: pointer;
 }
 
+.profile-form__submit-btn:hover {
+  -webkit-box-shadow: 0px 0px 10px #00000050;
+          box-shadow: 0px 0px 10px #00000050;
+}
+
+.profile-form__submit-btn:active {
+  background-color: #2a555a;
+}
+
 .register__form-head {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -205,6 +215,159 @@ body {
 .login__form .profile-form__input {
   font-size: 20px;
   text-align: center;
+}
+
+.profile-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.profile {
+  width: 600px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  font-family: Noto Sans, Roboto, Helvetica, sans-serif;
+}
+
+.profile-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.profile-main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  row-gap: 16px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.profile-footer {
+  width: 100%;
+  text-align: center;
+}
+
+.profile-footer p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.profile__picture {
+  display: block;
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  background-color: #3a767d;
+}
+
+.profile__username {
+  width: 100%;
+  border-radius: 10px;
+  padding: 4px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.profile__username p {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #393939;
+}
+
+.profile__infos {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  row-gap: 4px;
+  padding: 0 20px;
+}
+
+.profile__infos-line {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.profile__infos .profile__creation-date {
+  margin: 0;
+  font-size: 12px;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.profile__actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  row-gap: 4px;
+  padding: 16px;
+  border-radius: 20px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.profile__action-line {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-column-gap: 16px;
+          column-gap: 16px;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.profile__action-line:hover {
+  -webkit-box-shadow: 0px 0px 5px #00000025;
+          box-shadow: 0px 0px 5px #00000025;
+}
+
+.profile__action-line:active {
+  background-color: #00000010;
+}
+
+.profile__action-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: #95959540;
+}
+
+.profile__action-title {
+  margin: 0;
+  font-size: 20px;
 }
 
 .no-profil {

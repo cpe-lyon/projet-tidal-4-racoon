@@ -4,9 +4,48 @@
 
 {% if isConnected %}
 
-<div class="profil">
+<div class="profile-container">
 
-    <p>Profil utilisateur</p>
+<div class="profile">
+
+    <div class="profile-header">
+        <img class="profile__picture" src="" alt="Phot de profil">
+    </div>
+
+    <div class="profile-main">
+        <div class="profile__username">
+            <p>Username</p>
+        </div>
+
+        <div class="profile__infos">
+            <p class="profile__infos-line">Prénom</p>
+            <p class="profile__infos-line">Nom</p>
+            <p class="profile__infos-line">Mail</p>
+            <p class="profile__creation-date">Membre depuis Mai 2022</p>
+        </div>
+
+        <div class="profile__actions">
+            <span class="profile__action-line">
+                <div class="profile__action-icon"></div>
+                <p class="profile__action-title">Editer mon profil</p>
+            </span>
+            <span class="profile__action-line">
+                <div class="profile__action-icon"></div>
+                <p class="profile__action-title">Modifier mon mot de passe</p>
+            </span>
+            <span class="profile__action-line">
+                <div class="profile__action-icon"></div>
+                <p class="profile__action-title">Déconnexion</p>
+            </span>
+        </div>
+    </div>
+
+    <div class="profile-footer">
+        <p>Copyright</p>
+        <p>Blablabla</p>
+    </div>
+
+</div>
 
 </div>
 
