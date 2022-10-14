@@ -11,13 +11,12 @@ body {
 
 .badge {
   background-color: #3A767D;
-  color: whitesmoke;
+  color: #fff;
   padding: 10px;
   border-radius: 20px;
   font-size: 14px;
   font-weight: bold;
   line-height: 1;
-  color: #fff;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -28,6 +27,23 @@ body {
 .row {
   display: inline-block;
   align-content: center;
+}
+
+.icon {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+.icon img, .icon svg {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hidden {
+  display: none;
 }
 
 .logo {
@@ -93,6 +109,80 @@ select {
 .table-container {
   width: 80vw;
   margin: auto;
+}
+
+.menu-nav {
+  position: fixed;
+  top: 10px;
+  right: 0;
+  height: 50px;
+  background-color: #3A767D;
+  fill: white;
+  border-radius: 30px 0 0 30px;
+  padding-left: 10px;
+  cursor: pointer;
+  font-size: 0.8em;
+  z-index: 1000;
+}
+
+.menu-nav-content--active {
+  height: initial;
+}
+.menu-nav-content--active .menu-nav-content {
+  display: block;
+}
+.menu-nav-content--active .menu-nav-icon {
+  display: none;
+}
+
+.menu-nav-content {
+  display: none;
+  list-style: none;
+  z-index: 1000;
+  padding: 10px 0;
+  margin: 0;
+  transition: 0.5s;
+}
+.menu-nav-content li {
+  padding: 0 10px;
+  border-radius: 30px 0 0 30px;
+  transition: background-color 0.2s ease-in-out;
+}
+.menu-nav-content li:hover {
+  background-color: #52aab3;
+}
+.menu-nav-content li a {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin: 0;
+  height: 50px;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 100%;
+  white-space: nowrap;
+  flex-flow: nowrap;
+  text-decoration: none;
+  color: white;
+}
+.menu-nav-content li a span {
+  margin-right: 10px;
+}
+
+.menu-nav-icon {
+  display: block;
+}
+
+.menu-nav-content-icon, .menu-nav-content-icon svg {
+  width: 50px;
+  fill: white;
+}
+
+.menu-nav-icon, .menu-nav-icon svg {
+  width: 50px;
+  fill: white;
+  pointer-events: none;
 }
 
 /*# sourceMappingURL=main.css.map */

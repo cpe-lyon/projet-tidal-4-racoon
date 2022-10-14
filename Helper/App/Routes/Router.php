@@ -155,19 +155,34 @@ class Router
             return $routes[$route];
         }
         if(str_starts_with($route, '/src/')){
-            if(file_exists(Constant::DIR_ROOT . substr($route, 1))){
-                $attachment_location = Constant::DIR_ROOT . substr($route, 1);
-                $filename = basename($attachment_location);
-                header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
-                header("Cache-Control: public"); // needed for internet explorer
-                header("Content-Type: " . MimeType::get($filename));
-                header("Content-Transfer-Encoding: Binary");
-                header("Content-Length:".filesize($attachment_location));
-                readfile($attachment_location);
-                die();
-            }
+            $this->returnFile($route);
+            $this->returnFile($route . '.js');
         }
         Controller::redirectError(404);
+    }
+
+
+    /**
+     * Permet de renvoyer le contenu d'un fichier par accès direct à partir de la route
+     *
+     * @param string $route
+     *
+     * @return void
+     */
+    private function returnFile(string $route): void
+    {
+        if(file_exists(Constant::DIR_ROOT . substr($route, 1)))
+        {
+            $attachment_location = Constant::DIR_ROOT . substr($route, 1);
+            $filename = basename($attachment_location);
+            header($_SERVER["SERVER_PROTOCOL"] . " 200 OK");
+            header("Cache-Control: public"); // needed for internet explorer
+            header("Content-Type: " . MimeType::get($filename));
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-Length:" . filesize($attachment_location));
+            readfile($attachment_location);
+            die();
+        }
     }
 
     /*
