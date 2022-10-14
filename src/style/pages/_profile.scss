@@ -1,0 +1,185 @@
+// USER PROFILE
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.profile {
+  width: 600px;
+  height: fit-content;
+  font-family: Noto Sans, Roboto, Helvetica, sans-serif;
+
+  &-header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  &-main {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  &-footer {
+    width: 100%;
+    text-align: center;
+
+    p {
+      margin: 0;
+      font-size: 12px;
+    }
+  }
+
+  &__picture {
+    display: block;
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    background-color: #3a767d;
+  }
+
+  &__username {
+    width: 100%;
+    border-radius: 10px;
+    padding: 4px;
+    background-color: #fff;
+    text-align: center;
+
+    p {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #393939;
+    }
+  }
+
+  &__infos {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+    padding: 0 20px;
+
+    &-line {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .profile__creation-date {
+      margin: 0;
+      font-size: 12px;
+      align-self: flex-end;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+    padding: 16px;
+    border-radius: 20px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  &__action {
+    &-line {
+      display: flex;
+      align-items: center;
+      column-gap: 16px;
+      padding: 8px 16px;
+      border-radius: 20px;
+
+      &:hover {
+        box-shadow: 0px 0px 5px #00000025;
+      }
+
+      &:active {
+        background-color: #00000010;
+      }
+    }
+
+    &-icon {
+      display: block;
+      width: 20px;
+      height: 20px;
+      background-color: #95959540;
+    }
+
+    &-title {
+      margin: 0;
+      font-size: 20px;
+    }
+  }
+}
+
+// NO PROFILE
+
+.no-profil {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  font-family: Noto Sans, Roboto, Helvetica, sans-serif;
+  background-color: #ecebeb;
+
+  &__logo {
+    width: 200px;
+    height: auto;
+  }
+
+  &__login-btn {
+    width: 50%;
+    margin-top: 32px;
+    margin-bottom: 8px;
+    padding: 5px;
+    border: 0;
+    border-radius: 15px;
+    background-color: #fff;
+    color: #393939;
+    font-size: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    outline: 0;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken(#fff, 2);
+      box-shadow: 0px 0px 20px #95959540;
+    }
+
+    &:active {
+      background-color: darken(#fff, 4);
+      box-shadow: 0px 0px 20px #95959540;
+    }
+  }
+
+  &__register {
+    color: #393939;
+  }
+
+  &__link {
+    color: #3a767d;
+    font-weight: 700;
+    cursor: pointer;
+    &:hover {
+      color: darken(#3a767d, 10);
+      text-decoration: underline;
+    }
+    &:active {
+      color: darken(#3a767d, 20);
+      text-decoration: underline;
+    }
+  }
+}
