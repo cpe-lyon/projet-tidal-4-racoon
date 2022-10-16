@@ -1,0 +1,61 @@
+{% extends "base/base.tpl.twig" %}
+
+{% set sources = [
+    {link: 'https://www.youtube.com/watch?v=QH2-TGUlwu4', title: 'Lien vers les docs PHP'},
+    {link: 'https://www.youtube.com/watch?v=QH2-TGUlwu4', title: 'Lien vers les docs Twig'},
+    {link: 'https://www.youtube.com/watch?v=QH2-TGUlwu4', title: 'Lien vers les docs JS'},
+    {link: 'https://www.youtube.com/watch?v=QH2-TGUlwu4', title: 'Lien vers les docs Acupuncture'},
+] %}
+
+{% block body %}
+
+    <div class="about-block">
+        <div>
+            <h1>Développements réalisés</h1>
+        </div>
+        <div>
+            <p>description du projet</p>
+            <p>technologies utilisées</p>
+        </div>
+    </div>
+    <div class="about-block">
+        <div>
+            <h1>Sources</h1>
+        </div>
+        <div>
+            {% for source in sources %}
+                <p><a href="{{ source.link }}">{{ source.title }}</a></p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="about-block">
+        <div>
+            <h1>Auteurs</h1>
+        </div>
+        <div>
+            <ul>
+                <li>Louisa Chaduc</li>
+                <li>Martin Jourjon</li>
+                <li>Alexis Lonchambon ?</li>
+                <li>Mathis Medard</li>
+            </ul>
+        </div>
+    </div>
+    <div class="about-block">
+        <div>
+            <h1>Ressources bibliographiques</h1>
+        </div>
+        <div>
+            <p>Aucune</p>
+        </div>
+    </div>
+    <div class="about-block">
+        <div>
+            <h1>Webographie</h1>
+        </div>
+        <div>
+            <p>www.mathis-medard.com</p>
+        </div>
+    </div>
+
+{% endblock %}

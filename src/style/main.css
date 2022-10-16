@@ -514,4 +514,75 @@ table td {
   pointer-events: none;
 }
 
+.about-block {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+  color: #3A767D;
+}
+.about-block:nth-child(odd) {
+  flex-direction: row-reverse;
+  background-color: #3A767D;
+  color: white;
+}
+.about-block div {
+  width: 45%;
+  padding: 0 2.5vw;
+}
+.about-block h1 {
+  font-size: 4em;
+  letter-spacing: -2px;
+  line-height: 100px;
+  font-weight: 700;
+}
+.about-block ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.about-block p, .about-block li, .about-block a {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  margin-bottom: 10px;
+}
+.about-block a {
+  color: inherit;
+  text-decoration: none;
+}
+.about-block a:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+  .about-block {
+    flex-direction: column;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .about-block:nth-child(odd) {
+    flex-direction: column;
+    background-color: #3A767D;
+    color: white;
+  }
+  .about-block div {
+    width: 100%;
+    padding: 0 5vw;
+  }
+  .about-block h1 {
+    font-size: 2.5em;
+    line-height: 50px;
+  }
+  .about-block p, .about-block li, .about-block a {
+    font-size: 16px;
+    line-height: 25px;
+  }
+}
+
 /*# sourceMappingURL=main.css.map */

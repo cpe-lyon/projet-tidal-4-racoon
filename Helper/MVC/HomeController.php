@@ -11,13 +11,9 @@ class HomeController extends Controller
         $this->params = [];
         return new Page('home.tpl.twig', $this->params);
     }
-
-    public function account($id = 0, $name = 0){
-        $this->params = [
-            'title' => 'Account',
-            'name' => $name,
-            'age' => $id,
-        ];
-        return new Page('home.tpl.twig', $this->params);
+    public function about(): Page
+    {
+        $this->params = [];
+        return new Page('about.tpl.twig', $this->params);
     }
 }

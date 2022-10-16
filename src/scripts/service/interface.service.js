@@ -20,13 +20,13 @@ class InterfaceService {
     }
 
     // function to select a Node from the DOM
-    static select(selector) {
-        return document.querySelector(selector);
+    static select(selector, parent = document) {
+        return parent.querySelector(selector);
     }
 
     // function to select all Nodes from the DOM
-    static selectAll(selector) {
-        return document.querySelectorAll(selector);
+    static selectAll(selector, parent = document) {
+        return parent.querySelectorAll(selector);
     }
 }
 

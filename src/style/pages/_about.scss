@@ -1,0 +1,82 @@
+.about-block {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+  color: $primary;
+
+  &:nth-child(odd) {
+    flex-direction: row-reverse;
+    background-color: $primary;
+    color: white;
+  }
+
+  div {
+    width: 45%;
+    padding: 0 2.5vw;
+  }
+
+  h1 {
+    font-size: 4em;
+    letter-spacing: -2px;
+    line-height: 100px;
+    font-weight: 700;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  p, li, a {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+    letter-spacing: .2px;
+    margin-bottom: 10px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: inherit;
+      text-decoration: underline;
+    }
+  }
+}
+
+// For small screen
+@media screen and (max-width: 768px) {
+  .about-block {
+    flex-direction: column;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    &:nth-child(odd) {
+      flex-direction: column;
+      background-color: $primary;
+      color: white;
+    }
+
+    div {
+      width: 100%;
+      padding: 0 5vw;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      line-height: 50px;
+    }
+
+    p, li, a {
+      font-size: 16px;
+      line-height: 25px;
+    }
+  }
+}
