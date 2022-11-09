@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MVC\Model;
+namespace Helper\MVC\Model;
 
 class Meridien
 {

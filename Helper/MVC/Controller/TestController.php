@@ -1,8 +1,11 @@
 <?php
 
-namespace Helper\MVC;
+namespace Helper\MVC\Controller;
 
 use Helper\App\DB;
+use Helper\MVC\Model\KeySympt;
+use Helper\MVC\Model\Keywords;
+use Helper\MVC\Model\Symptome;
 use Helper\Twig\Page;
 
 class TestController extends Controller
@@ -16,10 +19,9 @@ class TestController extends Controller
 
 
 
-//        $query = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
-//        var_dump($query[1]);
+        $query = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
+//        var_dump($query);
 //        $request = $Context->getAll(Meridien::class);
-//        var_dump(end($request));
 
 //         $m = new Meridien();
 //         $m->code = "A";

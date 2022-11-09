@@ -1,8 +1,8 @@
 <?php
 
+use Helper\MVC\Controller\Controller;
+use Helper\MVC\Controller\MenuController;
 use Helper\App\Routes\Router;
-use Helper\MVC\Controller;
-use Helper\MVC\MenuController;
 
 /*
  * -------------- FICHIER DE ROUTES --------------

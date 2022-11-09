@@ -1,6 +1,6 @@
 <?php
 
-namespace Helper\MVC;
+namespace Helper\MVC\Controller;
 
 use Helper\Twig\Page;
 

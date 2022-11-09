@@ -113,7 +113,7 @@ class DB
      * 
      * Exemple : 
      * ```
-     * $❤️ = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
+     * $coeur = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
      * ```
      * 
      * @param string $classLeft La classe de la jointure à gauche

@@ -2,10 +2,10 @@
 
 namespace Helper\App\Routes;
 
+use Helper\MVC\Controller\Controller;
 use Defr\PhpMimeType\MimeType;
-use Helper\App\Constant;
-use Helper\MVC\Controller;
 use Exception;
+use Helper\App\Constant;
 
 /*
  * Class Routeur pour gérer les Routes existantes 
@@ -144,16 +144,13 @@ class Router
         }
         $routes = $this->getRoutes($method);
 
-        $route = explode('/', $route);
-        foreach ($route as &$value) {
-            if(ctype_digit($value)){
-                $value = '@@';
+        foreach ($routes as $key => $existingRoute)
+        {
+            if(preg_match('/^' . str_replace(['@@', '/'], ['[A-z0-9-_]+', '\/'], $key) . '$/', $route)) {
+                return $routes[$route];
             }
         }
-        $route = implode('/', $route);
-        if (array_key_exists($route, $routes)) {
-            return $routes[$route];
-        }
+
         if(str_starts_with($route, '/src/')){
             $this->returnFile($route);
             $this->returnFile($route . '.js');
@@ -237,7 +234,8 @@ class Router
             $controller = new $controller();
             $action = $route->getAction();
             $params = $route->getParams();
-            return $controller->$action(...$params);
+            $request = new Request($_GET, $_POST, $_FILES, $_COOKIE, $_SERVER);
+            return $controller->$action($request, ...$params);
         }
     }
 }

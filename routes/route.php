@@ -1,10 +1,10 @@
 <?php
 
+use Helper\MVC\Controller\Controller;
+use Helper\MVC\Controller\HomeController;
+use Helper\MVC\Controller\ProfilController;
+use Helper\MVC\Controller\TestController;
 use Helper\App\Routes\Router;
-use Helper\MVC\Controller;
-use Helper\MVC\HomeController;
-use Helper\MVC\TestController;
-use Helper\MVC\ProfilController;
 
 /*
  * -------------- FICHIER DE ROUTES --------------
