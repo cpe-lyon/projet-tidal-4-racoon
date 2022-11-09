@@ -183,3 +183,19 @@
     }
   }
 }
+
+// EDITION DU PASSWORD
+.pwd-edit__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #00000050;
+}
+
+.pwd-edit {
+}
