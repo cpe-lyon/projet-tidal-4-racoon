@@ -12,7 +12,7 @@ composer install
 ```
 
 ```bash
-bash ./init.sh
+./init.sh
 ```
 
 ## launch
