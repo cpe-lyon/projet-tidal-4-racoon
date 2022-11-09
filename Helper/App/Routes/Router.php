@@ -147,7 +147,7 @@ class Router
         foreach ($routes as $key => $existingRoute)
         {
             if(preg_match('/^' . str_replace(['@@', '/'], ['[A-z0-9-_]+', '\/'], $key) . '$/', $route)) {
-                return $routes[$route];
+                return $existingRoute;
             }
         }
 
