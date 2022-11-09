@@ -2,6 +2,7 @@
 
 namespace Helper\MVC\Controller;
 
+use Helper\App\Routes\Request;
 use Helper\App\Routes\Types\HTTP;
 use Helper\Twig\Page;
 use JetBrains\PhpStorm\NoReturn;
@@ -29,7 +30,7 @@ class Controller
         $this->redirect('/');
     }
 
-    public function error(string $errorCode): Page
+    public function error(Request $request, string $errorCode): Page
     {
         switch ($errorCode) {
             case HTTP::NOT_FOUND:
@@ -81,15 +82,6 @@ class Controller
     {
         header("Location: $url");
         exit;
-    }
-
-    protected function urlInput(array $params, int $place, mixed $default = null): int|null
-    {
-        if (isset($params[$place]) && ctype_digit($params[$place])) {
-            return intval($params[$place]);
-        } else {
-            return $default;
-        }
     }
 
     public function ping(): string
