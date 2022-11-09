@@ -60,7 +60,7 @@ class Router
      */
     public static function get(string $route, string $controller, string $action): void
     {
-        self::getInstance()->registerGet($route, $controller, $action);
+        self::getInstance()->registerGet('/' . trim($route, '/'), $controller, $action);
     }
 
     /*
@@ -68,7 +68,7 @@ class Router
      */
     public static function post(string $route, string $controller, string $action): void
     {
-        self::getInstance()->registerPost($route, $controller, $action);
+        self::getInstance()->registerPost('/' . trim($route, '/'), $controller, $action);
     }
 
     /*
@@ -76,7 +76,7 @@ class Router
      */
     public static function put(string $route, string $controller, string $action): void
     {
-        self::getInstance()->registerPut($route, $controller, $action);
+        self::getInstance()->registerPut('/' . trim($route, '/'), $controller, $action);
     }
 
     /*
@@ -84,7 +84,7 @@ class Router
      */
     public static function delete(string $route, string $controller, string $action): void
     {
-        self::getInstance()->registerDelete($route, $controller, $action);
+        self::getInstance()->registerDelete('/' . trim($route, '/'), $controller, $action);
     }
 
     /*
@@ -200,7 +200,12 @@ class Router
     public function getURI(): string
     {
         if ($this->route === null) {
-            $this->route = $_SERVER['REQUEST_URI'];
+            // remove query string
+            $uri = $_SERVER['REQUEST_URI'];
+            $uri = explode('?', $uri)[0];
+            $uri = explode('#', $uri)[0];
+            $uri = trim($uri, '/');
+            $this->route = '/' . $uri;
         }
         while ($this->route !== '/' && str_ends_with($this->route, '/')) {
             (new Controller())->redirect(substr($this->route, 0, -1));
