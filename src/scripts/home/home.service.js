@@ -6,7 +6,8 @@ class HomeService extends Service {
     }
 
     filterKeywords(filter) {
-        return this.get('/keywords/filter', {'filter': filter} );
+        return this.get('/keywords/keyword', {filter: filter});
+        //return this.get('/keywords/', {'filter': filter} );
     }
 
     ping() {

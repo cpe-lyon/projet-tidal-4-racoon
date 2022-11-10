@@ -1,9 +1,9 @@
 <?php
 
 use Helper\MVC\Controller\Controller;
+use Helper\MVC\Controller\KeywordsController;
 use Helper\MVC\Controller\MenuController;
 use Helper\App\Routes\Router;
-use Helper\MVC\KeywordsController;
 
 /*
  * -------------- FICHIER DE ROUTES --------------
@@ -38,7 +38,7 @@ Router::group('/api', function (){
     Router::group('/keywords', function () {
         Router::get('/ping', Controller::class, 'ping');
         Router::get('/get', KeywordsController::class, 'getAll');
-        Router::get('/filter/', KeywordsController::class, 'filterKeyword');
+        Router::get('/keyword', KeywordsController::class, 'filterKeyword');
     });
     Router::get('/menu/account', MenuController::class, 'account');
 });
