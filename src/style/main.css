@@ -417,6 +417,9 @@ button {
   font-size: 20px;
   color: #333;
 }
+.search-bar .search-btn :hover {
+  fill: #d7df23;
+}
 .search-bar :nth-child(n+4) {
   margin-right: 20px;
 }
@@ -471,6 +474,10 @@ table td {
   flex-wrap: wrap;
   border-radius: 0 0 15px 15px;
   padding-bottom: 8px;
+}
+.suggests .content :hover {
+  background-color: #dcdcdc;
+  transition: 0.2s ease-out;
 }
 .suggests .content .keyword {
   line-height: 25px;

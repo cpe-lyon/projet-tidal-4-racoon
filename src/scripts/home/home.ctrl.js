@@ -2,7 +2,7 @@ import HomeService from "./home.service.js";
 import InterfaceService from "../service/interface.service.js";
 import service from "../service/service";
 
-class TypeSearch {
+class SearchType {
     constructor(content, filter) {
         this.content = content;
         this.filter = filter;
@@ -33,22 +33,22 @@ class HomeCtrl {
         // Récupération du champs de recherche & filtre
         const filterInput = document.getElementById('search');
         // Bind de l'action sur le bouton de filtre
-        document.getElementById('filter-btn').onclick = () => {
+        $('#filter-btn').click(() => {
             const selectFilter = document.getElementById('filterType');
-            const filter = selectFilter.options[selectFilter.selectedIndex].value;
+            const filter = selectFilter.options[selectFilter.selectedIndex].text;
             console.log(filter);
-            if(filter === 'Filtre' || filter === 'Symptome') {
+            if(filter === 'Filtre' || filter === 'Symptomes' || filter === '' || filter === undefined) {
                 return;
             }
-            this.searchFilterList.set(filterInput.value, new TypeSearch(filter, filterInput.value));
+            this.searchFilterList.set(filterInput.value, new SearchType(filter, filterInput.value));
             this.addBadgeFilter(filterInput.value);
-        }
+        });
 
         // Bind de l'action sur le bouton de recherche
-        document.getElementById('search-btn').onclick = () => {
+        $('#search-btn').click(() => {
             // TODO : Call vers le controller pour lancer la recherche
             console.log(this.searchFilterList);
-        }
+        });
 
         // Bind de l'action de supprimer un filtre
         this.$scope.deleteFilter = (filterKey) => {
@@ -57,10 +57,30 @@ class HomeCtrl {
             document.getElementById(filterKey).remove();
         }
 
+        $(document).click(() => {
+            if($( "#filterType option:selected" ).text() === 'Symptomes') {
+                this.deleteSuggestions();
+            }
+        })
+
+        $('#suggests').click((e) => {
+            e.stopPropagation(); // This is the preferred method.
+        });
+
+        $('#filterType').on('change', () => {
+            const value = $( "#filterType option:selected" ).text();
+            if(value === 'Symptome') {
+                $('#search').attr('placeholder', 'Rechercher par symptome');
+                $('#filter-btn').prop('disabled', true);
+            } else if(value !== 'Filtre') {
+                $('#search').attr('placeholder', 'Rechercher par ' + value);
+                $('#filter-btn').prop('disabled', false);
+            }
+        });
+
         // Quand l'utilisateur insère des lettres dans le champs de recherche on lance la recherche de keywords
-        $('#search').on('input', (event) => {
-            const selectFilter = document.getElementById('filterType');
-            const filter = selectFilter.options[selectFilter.selectedIndex].text;
+        $('#search').on('input', () => {;
+            const filter = $( "#filterType option:selected" ).text();
             if(filter !== 'Symptomes') {
                 return;
             }
@@ -78,8 +98,18 @@ class HomeCtrl {
      */
     addKeywordToFiler(keyword) {
         this.addBadgeFilter(keyword);
-        this.searchFilterList.set(keyword, new TypeSearch('symptome', keyword));
+        this.searchFilterList.set(keyword, new SearchType('symptome', keyword));
         this.reloadSuggestions();
+    }
+
+    /**
+     * Supprime la liste de suggestions
+     */
+    deleteSuggestions() {
+        const suggests = document.getElementById('suggest-list');
+        if(suggests) {
+            suggests.remove();
+        }
     }
 
     /**
@@ -87,11 +117,8 @@ class HomeCtrl {
      * et met à jour la partie html
      */
     reloadSuggestions() {
-        const suggests = document.getElementById('suggest-list');
+        this.deleteSuggestions();
         const filterInput = document.getElementById('search');
-        if(suggests) {
-            suggests.remove();
-        }
         if(filterInput.value !== '' && this.keywords.length > 0) {
             const suggestList = document.createElement("div");
             suggestList.setAttribute("id", "suggest-list");

@@ -16,4 +16,9 @@ class HomeController extends Controller
         $this->params = [];
         return new Page('about.tpl.twig', $this->params);
     }
+
+    public function startSearch($request): array
+    {
+        $filterList = $request->get('filters', null);
+    }
 }

@@ -79,6 +79,9 @@
       font-size: 20px;
       color: #333;
     }
+    :hover {
+        fill: $secondary;
+    }
   }
 
   :nth-child(n+4) {
@@ -138,6 +141,11 @@ table {
     flex-wrap: wrap;
     border-radius: 0 0 15px 15px;
     padding-bottom: 8px;
+
+    :hover {
+      background-color: #dcdcdc;
+      transition: 0.2s ease-out;
+    }
     .keyword {
       line-height: 25px;
       font-size: 18px;
