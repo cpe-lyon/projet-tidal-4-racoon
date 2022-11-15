@@ -29,22 +29,33 @@ class Service {
         return this.request('DELETE', url);
     }
 
-    // make XMLHttpRequest to the server
+    // make fetch to the server
     // return a promise
     request(method, url, data){
-        return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open(method, Service.api + url);
-            xhr.onload = () => {
-                if(xhr.status >= 200 && xhr.status < 300){
-                    const response = JSON.parse(xhr.response);
-                    resolve(response);
-                } else {
-                    reject(xhr.statusText);
+        switch (method){
+            case 'POST':
+            case 'PUT':
+                let formData = new FormData();
+                for(let key in data){
+                    formData.append(key, data[key]);
                 }
-            };
-            xhr.onerror = () => reject(xhr.statusText);
-            xhr.send(data);
+                data = formData;
+                break;
+            case 'GET':
+            case 'DELETE':
+                data = null;
+                break;
+        }
+        return fetch(Service.api + url, {
+            method: method,
+            headers: {
+                'Accept': 'application/json',
+            },
+            mode: 'cors',
+            cache: 'default',
+            body: data
+        }).then((response) => {
+            return response.json();
         });
     }
 }
