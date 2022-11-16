@@ -46,8 +46,10 @@ class HomeCtrl {
                 return;
             }
             const id = this.filterValue[filter] + '-' + filterInput.value;
-            this.searchFilterList.set(id, new SearchType(this.filterValue[filter], filterInput.value));
-            this.addBadgeFilter(filterInput.value, id);
+            if(!this.searchFilterList.has(id)) {
+                this.searchFilterList.set(id, new SearchType(this.filterValue[filter], filterInput.value));
+                this.addBadgeFilter(filterInput.value, id);
+            }
         });
 
         // Bind de l'action sur le bouton de recherche
@@ -105,8 +107,8 @@ class HomeCtrl {
      * @param keyword
      */
     addKeywordToFiler(keyword) {
-        this.addBadgeFilter('symptome' + - + keyword);
-        this.searchFilterList.set(keyword, new SearchType('symptome', keyword));
+        this.addBadgeFilter(keyword, 'symptome' + '-' + keyword);
+        this.searchFilterList.set('symptome' + '-' + keyword, new SearchType('symptome', keyword));
         this.reloadSuggestions();
     }
 
@@ -132,7 +134,7 @@ class HomeCtrl {
             suggestList.setAttribute("id", "suggest-list");
             suggestList.setAttribute("class", "content");
             for (const keyword of this.keywords) {
-                if(this.searchFilterList.has(keyword)) {
+                if(this.searchFilterList.has('symptome' + '-' + keyword)) {
                     continue;
                 }
                 let keywordElement = document.createElement("button");

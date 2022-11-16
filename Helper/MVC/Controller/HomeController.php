@@ -39,12 +39,9 @@ class HomeController extends Controller
         foreach ($filterList as $filter) {
             if($filter->content == 'symptome') {
                 $value .= $filter->filter;
-                if($filterList[sizeof($filterList)-1] != $filter){
-                    $value .= '|';
-                }
             } else {
                 // Ajoute directement la condition pour la bonne table
-                $conditions[] = new Condition($filter->content, "'%" . $filter->filter . "%'", 'LIKE');
+                $conditions[] = new Condition($filter->content, "%" . $filter->filter . "%", 'LIKE');
             }
         }
         // Des keywords pour les symptomes sont présents, on va récupérer les ids des symptomes
@@ -52,7 +49,7 @@ class HomeController extends Controller
         if($value != ''){
             // Opérateur pour effectuer plusieurs LIKE sur plusieurs valeurs
             $op = "~*";
-            $condition = new Condition('name', $value, $op);
+            $condition = new Condition('name', substr($value, 0, -1), $op);
             $symptomes = $context->getAllJoin(Symptome::class, Keywords::class, KeySympt::class, [$condition]);
         }
 
@@ -60,12 +57,9 @@ class HomeController extends Controller
         if(sizeof($symptomes) > 0) {
             $idsArray = '(';
             foreach ($symptomes as $symptome) {
-                $idsArray .= $symptome->ids;
-                if($symptomes[sizeof($symptomes)-1] != $symptome){
-                    $idsArray .= ', ';
-                }
+                $idsArray .= $symptome->ids . ', ';
             }
-            $idsArray .= ')';
+            $idsArray = substr($idsArray, 0, -2) . ')';
             $op = "IN";
             $conditions[] = new Condition('Symptome.ids', $idsArray, $op, $idsArray);
         }
