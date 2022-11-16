@@ -10,6 +10,10 @@ class HomeService extends Service {
         //return this.get('/keywords/', {'filter': filter} );
     }
 
+    search(searchFilterList) {
+        return this.post('/patho/get', {filters: JSON.stringify(searchFilterList)});
+    }
+
     ping() {
         return this.get('/keywords/ping');
     }

@@ -52,17 +52,17 @@ class Condition
      * @param mixed $val    Valeur de la condition
      * @param string $op    Opération de la condition. Par défaut : `=`
      */
-    public function __construct(string $key, $val, string $op = "=")
+    public function __construct(string $key, $val, string $op = "=", string $brutBalue = "")
     {
         $this->key = $key;
-
         if(is_bool($val))
         { $this->value = $val?"TRUE":"FALSE"; }
         if(is_string($val))
         { $this->value = "'$val'"; }
         if(is_int($val))
         { $this->value = $val; }
-
+        if($brutBalue != "")
+        { $this->value = $brutBalue; }
         $this->op = $op;
     }
 }

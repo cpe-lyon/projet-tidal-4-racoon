@@ -8,5 +8,10 @@
     },
     "require-dev": {
       "phpmd/phpmd" : "@stable"
+    },
+    "config": {
+        "allow-plugins": {
+            "robloach/component-installer": true
+        }
     }
 }
