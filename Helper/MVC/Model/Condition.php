@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MVC\Model;
+namespace Helper\MVC\Model;
 
 
 
@@ -23,7 +23,7 @@ class Condition
      * Valeur de la condition
      * @var mixed peut être tout type de variable existant en BDD
      */
-    public $value;
+    public mixed $value;
 
     /**
      * Opération à executer sur la condition/ 
