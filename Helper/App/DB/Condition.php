@@ -1,18 +1,16 @@
 <?php
 
-namespace App\MVC\Model;
-
-
-
-
+namespace Helper\App\DB;
 
 /**
  * Classe Condition pour parametrer des conditions SQL sur le DBContext
  * 
  * @author Alexis L. 
  */
-class Condition
+abstract class Condition
 {
+    public static string $queryOperator;
+
     /** 
      * Clé sur laquelle se base la condition
      * @var string Nom de la clé en string
@@ -30,7 +28,7 @@ class Condition
      * Par défaut : `=`
      * @var string C'est un string.
      */
-    public string $op;
+    public string $operator;
 
     /// key est toujours un string
     /// val peut prendre plusieurs types :
@@ -48,21 +46,26 @@ class Condition
      * new Condition("key", 5, "!=")    // Pas un 5
      * ```
      * 
-     * @param string $key   La clé sous forme de string
-     * @param mixed $val    Valeur de la condition
-     * @param string $op    Opération de la condition. Par défaut : `=`
+     * @param string $key      La clé sous forme de string
+     * @param mixed  $value    Valeur de la condition
+     * @param string $operator Opération de la condition. Par défaut : `=`
      */
-    public function __construct(string $key, $val, string $op = "=")
+    public function __construct(string $key, mixed $value, string $operator = "=")
     {
         $this->key = $key;
 
-        if(is_bool($val))
-        { $this->value = $val?"TRUE":"FALSE"; }
-        if(is_string($val))
-        { $this->value = "'$val'"; }
-        if(is_int($val))
-        { $this->value = $val; }
+        if(is_bool($value))
+        { $this->value = $value?"TRUE":"FALSE"; }
+        if(is_string($value))
+        { $this->value = "'$value'"; }
+        if(is_int($value))
+        { $this->value = $value; }
 
-        $this->op = $op;
+        $this->operator = $operator;
+    }
+
+    public function generate(bool $first): string
+    {
+        return ($first ? self::$queryOperator : '') . ' ' . $this->key . ' ' . $this->operator . ' ' . $this->value;
     }
 }
