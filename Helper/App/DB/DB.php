@@ -19,6 +19,8 @@ use PDOStatement;
 class DB
 {
     private PDO $db;
+    private string $query;
+    private array $params;
 
     /**
      * Juste une requête SQL a executer
@@ -87,45 +89,44 @@ class DB
 
     /**
      * Recupere tous les elements d'une classe avec une jointure avec une autre classe
-     * 
-     * Exemple : 
+     *
+     * Exemple :
      * ```
      * $coeur = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
      * ```
-     * 
-     * @param string           $classLeft  La classe de la jointure à gauche
-     * @param string           $classRight La classe de la jointure à droite
-     * @param string           $classJoin  La classe faisant la jointure entre les deux classes
+     *
+     * @param string           $fromClass  La classe de la jointure à gauche
+     * @param string           $pivotClass La classe de la jointure à droite
+     * @param string           $finalClass La classe faisant la jointure entre les deux classes
      * @param Condition[]|null $conditions La liste des conditions pour filtrer le resultat
-     * 
+     *
      * @return array|false Le resultat de fetchAll PDO formatté sous forme d'objet
      */
-    public function getJoin(string $classLeft, string $classRight, string $classJoin, array $conditions = NULL): bool|array
+    public function getJoin(string $fromClass, string $pivotClass, string $finalClass, array $conditions = NULL): bool|array
     {
-        $clv = get_class_vars($classLeft); //Class Left Variables
-        $cjv = get_class_vars($classJoin); //Class Join Variables
-        $crv = get_class_vars($classRight); //Class Right Variables
+        $fromVar  = get_class_vars($fromClass);  //Class Left Variables
+        $pivotVar = get_class_vars($pivotClass); //Class Join Variables
+        $finalVar = get_class_vars($finalClass); //Class Right Variables
 
-        $lj = array_keys(array_intersect_key($clv, $cjv))[0]; //Left and Join intersection
-        $jr = array_keys(array_intersect_key($cjv, $crv))[0]; //Join and Right intersection
+        $pivotKey = array_keys(array_intersect_key($fromVar, $pivotVar))[0];  //Left and Join intersection
+        $finalKey = array_keys(array_intersect_key($pivotVar, $finalVar))[0]; //Join and Right intersection
 
-        $cnl = $this->parseTableName($classLeft); //ClassName Left
-        $cnj = $this->parseTableName($classJoin); //ClassName Join
-        $cnr = $this->parseTableName($classRight); //ClassName Right
+        $fromClass  = $this->parseTableName($fromClass);  //ClassName Left
+        $pivotClass = $this->parseTableName($pivotClass); //ClassName Join
+        $finalClass = $this->parseTableName($finalClass); //ClassName Right
 
-        $q = "SELECT * FROM $cnl JOIN $cnj ON $cnl.$lj = $cnj.$lj JOIN $cnr ON $cnj.$jr = $cnr.$jr";
-
+        $sQuery = "SELECT * FROM $fromClass JOIN $pivotClass ON $fromClass.$pivotKey = $pivotClass.$pivotKey JOIN $finalClass ON $pivotClass.$finalKey = $finalClass.$finalKey";
 
         if($conditions != NULL && sizeof($conditions))
         {
-            $q .= " WHERE ";
+            $sQuery .= " WHERE ";
             foreach ($conditions as $i=>$condition) {
-                $q .= $condition->generate($i+1 < sizeof($conditions));
+                $sQuery .= $condition->generateQuery($i + 1 < sizeof($conditions));
             }
         }
 
 
-        $query = $this->getDb()->prepare($q);
+        $query = $this->getDb()->prepare($sQuery);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
@@ -151,20 +152,7 @@ class DB
         if (str_contains($table, '\\')) {
             return $this->getItemClass($table, $conditions);
         }
-
-        $qString = "SELECT * FROM $table WHERE ";
-
-        if($conditions == NULL || !sizeof($conditions))
-        { return False; }
-
-        foreach ($conditions as $i=>$condition) {
-            $qString .= $condition->key ." " . $condition->operator . " " . $condition->value;
-            if($i+1 < sizeof($conditions))
-            { $qString .= " AND "; }
-        }
-
-        $query = $this->getDb()->prepare($qString);
-        $query->execute();
+        $query = $this->getQuery($table, $conditions);
         return $query->fetch(PDO::FETCH_OBJ);
     }
 
@@ -172,27 +160,15 @@ class DB
     /**
      * Recupère un objet en BDD, parsé avec sa classe
      * 
-     * @param mixed $class La classe de l'objet `Foo::class`
+     * @param mixed       $class      La classe de l'objet `Foo::class`
      * @param Condition[] $conditions Tableau de conditions pour identifier l'objet à retourner
      * 
      * @return mixed Resultat de fetch ou false si un truc a merdé
      */
-    private function getItemClass($class, $conditions)
+    private function getItemClass(mixed $class, array $conditions): mixed
     {
         $tablename = $this->parseTableName($class);
-        $qString = "SELECT * FROM $tablename WHERE ";
-
-        if($conditions == NULL || !sizeof($conditions))
-        { return False; }
-
-        foreach ($conditions as $i=>$condition) {
-            $qString .= $condition->key ." " . $condition->operator . " " . $condition->value;
-            if($i+1 < sizeof($conditions))
-            { $qString .= " AND "; }
-        }
-
-        $query = $this->getDb()->prepare($qString);
-        $query->execute();
+        $query = $this->getQuery($tablename, $conditions);
         return $query->fetch(PDO::FETCH_CLASS, $class);
     }
 
@@ -398,20 +374,20 @@ class DB
      */
     private function getQuery(string $tablename, ?array $conditions): PDOStatement|false
     {
-        $qString = "SELECT * FROM $tablename";
+        $this->query = "SELECT * FROM $tablename";
 
         if ($conditions != null && sizeof($conditions)) {
-            $qString .= " WHERE ";
-            foreach ($conditions as $i => $condition) {
-                $qString .= $condition->key . " " . $condition->op . " " . $condition->value;
-                if ($i + 1 < sizeof($conditions)) {
-                    $qString .= " AND ";
-                }
+            $this->query .= " WHERE ";
+            foreach ($conditions as $key => $condition) {
+                /* @var Condition $condition */
+                $this->query .= $condition->generateQuery($key + 1 < sizeof($conditions));
+            }
+            $query = $this->getDb()->prepare($this->query);
+            foreach ($conditions as $condition) {
+                $param = $condition->generateParam();
+                $query->bindParam($param[0], $param[1]);
             }
         }
-
-        $query = $this->getDb()->prepare($qString);
-        $query->execute();
-        return $query;
+        return $query ?? $this->getDb()->prepare($this->query);
     }
 }

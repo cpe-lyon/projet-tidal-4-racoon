@@ -64,8 +64,13 @@ abstract class Condition
         $this->operator = $operator;
     }
 
-    public function generate(bool $first): string
+    public function generateQuery(bool $first): string
     {
-        return ($first ? self::$queryOperator : '') . ' ' . $this->key . ' ' . $this->operator . ' ' . $this->value;
+        return ($first ? self::$queryOperator : '') . ' ' . $this->key . ' ' . $this->operator . ' :' . $this->key;
+    }
+
+    public function generateParam(): array
+    {
+        return [$this->key, $this->value];
     }
 }
