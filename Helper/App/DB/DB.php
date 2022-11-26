@@ -1,9 +1,10 @@
 <?php
 
-namespace Helper\App;
+namespace Helper\App\DB;
 
-use App\MVC\Model\Condition;
+use Helper\App\Constant;
 use PDO;
+use PDOStatement;
 
 /**
  * Contexte de la BDD
@@ -18,6 +19,8 @@ use PDO;
 class DB
 {
     private PDO $db;
+    private string $query;
+    private array $params;
 
     /**
      * Juste une requête SQL a executer
@@ -26,7 +29,7 @@ class DB
      * 
      * @return array|false Retourne le resultat de la requête ou False si un truc a merdé
      */
-    public function rawQuery(string $query): false|array
+    public function query(string $query): false|array
     {
         return $this->getDb()->query($query)->fetchAll();
     }
@@ -34,38 +37,26 @@ class DB
     //$Context->getAll("keywords");
     /**
      * Recupère tous les éléments d'une table en BDD
-     * 
+     *
      * Exemples :
      * ```
      * $Context->getAll("keywords")                             // retourne la liste de Keyword de la table keywords
      * $Context->getAll("keywords", [new Condition("idk", 5)])  // Cherche tous les keywords ayant l'ID 5
      * ```
-     * @param mixed $class La classe de l'objet `Foo::class`
-     * @param Condition[] $conditions Liste des conditions à appliquer
-     * 
-     * 
+     *
+     * @param mixed            $table      La classe de l'objet `Foo::class`
+     * @param Condition[]|null $conditions Liste des conditions à appliquer
+     *
+     *
      * @return array|false Retourne le resultat de la requête ou `False` si un truc a merdé
-     * 
+     *
      */
-    public function getAll($table, $conditions = NULL)
+    public function get(mixed $table, array $conditions = NULL): bool|array
     {
         if (str_contains($table, '\\')) {
             return $this->getAllClass($table, $conditions);
         }
-        $qString = "SELECT * FROM $table";
-
-        if($conditions != NULL && sizeof($conditions))
-        {
-            $qString .= " WHERE ";
-            foreach ($conditions as $i=>$condition) {
-                $qString .= $condition->key ." " . $condition->op . " " . $condition->value;
-                if($i+1 < sizeof($conditions))
-                { $qString .= " AND "; }
-            }
-        }
-
-        $query = $this->getDb()->prepare($qString);
-        $query->execute();
+        $query = $this->getQuery($table, $conditions);
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -79,30 +70,18 @@ class DB
      * $Context->getAll(Keyword::class)                             // retourne la liste de Keyword de la table keywords
      * $Context->getAll(Keyword::class, [new Condition("idk", 5)])  // Cherche tous les keywords ayant l'ID 5
      * ```
-     * @param mixed $class La classe de l'objet `Foo::class`
-     * @param Condition[] $conditions Liste des conditions à appliquer
+     *
+     * @param mixed            $class      La classe de l'objet `Foo::class`
+     * @param Condition[]|null $conditions Liste des conditions à appliquer
      * 
      * 
      * @return array|false Retourne le resultat de la requête formatté sous forme de classes ou `False` si un truc a merdé
      * 
      */
-    private function getAllClass($class, $conditions = NULL)
+    private function getAllClass(mixed $class, array $conditions = NULL): bool|array
     {
         $tablename = $this->parseTableName($class);
-        $qString = "SELECT * FROM $tablename";
-
-        if($conditions != NULL && sizeof($conditions))
-        {
-            $qString .= " WHERE ";
-            foreach ($conditions as $i=>$condition) {
-                $qString .= $condition->key ." " . $condition->op . " " . $condition->value;
-                if($i+1 < sizeof($conditions))
-                { $qString .= " AND "; }
-            }
-        }
-
-        $query = $this->getDb()->prepare($qString);
-        $query->execute();
+        $query = $this->getQuery($tablename, $conditions);
         return $query->fetchAll(PDO::FETCH_CLASS, $class);
     }
 
@@ -110,47 +89,44 @@ class DB
 
     /**
      * Recupere tous les elements d'une classe avec une jointure avec une autre classe
-     * 
-     * Exemple : 
+     *
+     * Exemple :
      * ```
      * $coeur = $Context->getAllJoin(Keywords::class, Symptome::class, KeySympt::class);
      * ```
-     * 
-     * @param string $classLeft La classe de la jointure à gauche
-     * @param string $classRight La classe de la jointure à droite
-     * @param string $classJoin La classe faisant la jointure entre les deux classes
-     * @param Condition[] $conditions La liste des conditions pour filtrer le resultat
-     * 
+     *
+     * @param string           $fromClass  La classe de la jointure à gauche
+     * @param string           $pivotClass La classe de la jointure à droite
+     * @param string           $finalClass La classe faisant la jointure entre les deux classes
+     * @param Condition[]|null $conditions La liste des conditions pour filtrer le resultat
+     *
      * @return array|false Le resultat de fetchAll PDO formatté sous forme d'objet
      */
-    public function getAllJoin($classLeft, $classRight, $classJoin, $conditions = NULL)
+    public function getJoin(string $fromClass, string $pivotClass, string $finalClass, array $conditions = NULL): bool|array
     {
-        $clv = get_class_vars($classLeft); //Class Left Variables
-        $cjv = get_class_vars($classJoin); //Class Join Variables
-        $crv = get_class_vars($classRight); //Class Right Variables
+        $fromVar  = get_class_vars($fromClass);  //Class Left Variables
+        $pivotVar = get_class_vars($pivotClass); //Class Join Variables
+        $finalVar = get_class_vars($finalClass); //Class Right Variables
 
-        $lj = array_keys(array_intersect_key($clv, $cjv))[0]; //Left and Join intersection
-        $jr = array_keys(array_intersect_key($cjv, $crv))[0]; //Join and Right intersection
+        $pivotKey = array_keys(array_intersect_key($fromVar, $pivotVar))[0];  //Left and Join intersection
+        $finalKey = array_keys(array_intersect_key($pivotVar, $finalVar))[0]; //Join and Right intersection
 
-        $cnl = $this->parseTableName($classLeft); //ClassName Left
-        $cnj = $this->parseTableName($classJoin); //ClassName Join
-        $cnr = $this->parseTableName($classRight); //ClassName Right
+        $fromClass  = $this->parseTableName($fromClass);  //ClassName Left
+        $pivotClass = $this->parseTableName($pivotClass); //ClassName Join
+        $finalClass = $this->parseTableName($finalClass); //ClassName Right
 
-        $q = "SELECT * FROM $cnl JOIN $cnj ON $cnl.$lj = $cnj.$lj JOIN $cnr ON $cnj.$jr = $cnr.$jr";
-
+        $sQuery = "SELECT * FROM $fromClass JOIN $pivotClass ON $fromClass.$pivotKey = $pivotClass.$pivotKey JOIN $finalClass ON $pivotClass.$finalKey = $finalClass.$finalKey";
 
         if($conditions != NULL && sizeof($conditions))
         {
-            $q .= " WHERE ";
+            $sQuery .= " WHERE ";
             foreach ($conditions as $i=>$condition) {
-                $q .= $condition->key ." " . $condition->op . " " . $condition->value;
-                if($i+1 < sizeof($conditions))
-                { $q .= " AND "; }
+                $sQuery .= $condition->generateQuery($i + 1 < sizeof($conditions));
             }
         }
 
 
-        $query = $this->getDb()->prepare($q);
+        $query = $this->getDb()->prepare($sQuery);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
@@ -166,31 +142,17 @@ class DB
      *  $Context->getAll(Keyword::class, [new Condition("idk", 5)])
      * ```
      * 
-     * @param string $table  Soit la classe passée en parametre (`Foo::class`) ou son nom en toutes lettres (`"Foo"`)
-     * @param Condition[] $conditions   La liste des conditions à remplir pour filtrer l'objet `[new Condition("id1", "5")]`
+     * @param string           $table      Soit la classe passée en parametre (`Foo::class`) ou son nom en toutes lettres (`"Foo"`)
+     * @param Condition[]|null $conditions La liste des conditions à remplir pour filtrer l'objet `[new Condition("id1", "5")]`
      * 
      * @return mixed Retourne le resultat parsé sous forme d'objet PDO ou sous forme de classe si précisée.
      */
-    public function getItem($table, $conditions = NULL)
+    public function getOne(string $table, ?array $conditions = NULL): mixed
     {
         if (str_contains($table, '\\')) {
             return $this->getItemClass($table, $conditions);
         }
-
-        $qString = "SELECT * FROM $table WHERE ";
-
-        if($conditions == NULL || !sizeof($conditions))
-        { return False; }
-
-        foreach ($conditions as $i=>$condition) {
-            $qString .= $condition->key ." " . $condition->op . " " . $condition->value;
-            if($i+1 < sizeof($conditions))
-            { $qString .= " AND "; }
-        }
-
-            
-        $query = $this->getDb()->prepare($qString);
-        $query->execute();
+        $query = $this->getQuery($table, $conditions);
         return $query->fetch(PDO::FETCH_OBJ);
     }
 
@@ -198,27 +160,15 @@ class DB
     /**
      * Recupère un objet en BDD, parsé avec sa classe
      * 
-     * @param mixed $class La classe de l'objet `Foo::class`
+     * @param mixed       $class      La classe de l'objet `Foo::class`
      * @param Condition[] $conditions Tableau de conditions pour identifier l'objet à retourner
      * 
      * @return mixed Resultat de fetch ou false si un truc a merdé
      */
-    private function getItemClass($class, $conditions)
+    private function getItemClass(mixed $class, array $conditions): mixed
     {
         $tablename = $this->parseTableName($class);
-        $qString = "SELECT * FROM $tablename WHERE ";
-
-        if($conditions == NULL || !sizeof($conditions))
-        { return False; }
-
-        foreach ($conditions as $i=>$condition) {
-            $qString .= $condition->key ." " . $condition->op . " " . $condition->value;
-            if($i+1 < sizeof($conditions))
-            { $qString .= " AND "; }
-        }
-
-        $query = $this->getDb()->prepare($qString);
-        $query->execute();
+        $query = $this->getQuery($tablename, $conditions);
         return $query->fetch(PDO::FETCH_CLASS, $class);
     }
 
@@ -244,7 +194,7 @@ class DB
      * 
      * @return boolean Reussite ou non de la requête 
      */
-    public function insert($object)
+    public function insert(object $object): bool
     {
         $classname = get_class($object);
         $tablename = $this->parseTableName($classname);
@@ -264,18 +214,11 @@ class DB
 
         foreach ($object as $key=>$value) 
         {
-            switch (gettype($value)) {
-                case 'boolean':
-                    $query .= $value ? "'True'" : "'False'";
-                    break;
-                case 'integer':
-                    $query .= $value;
-                    break;
-                
-                default: //string ou autres fonctionnent avec des quotes.
-                    $query .= '\''.$value.'\'';
-                    break;
-            }
+            $query .= match (gettype($value)) {
+                'boolean' => $value ? "'True'" : "'False'",
+                'integer' => $value,
+                default   => '\'' . $value . '\'',
+            };
             
             if($key != array_key_last($keys)) {
                 $query .= ', ';
@@ -284,9 +227,10 @@ class DB
 
         $query .= ")";
 
-        $ans = $this->getDb()->prepare($query);
-        $ans = $ans->execute();
-        return $ans;
+        return $this
+            ->getDb()
+            ->prepare($query)
+            ->execute();
     }
 
 
@@ -303,12 +247,12 @@ class DB
      *  $a = $Context->update($s, array("ids", "idp"));     // Update un objet en spécifiant les IDs de l'objet
      *  ```
      * 
-     * @param object $object  L'objet à mettre à jour
-     * @param string[] $ids     La liste des IDs sous la forme `array('id1', 'id2', ...)`
+     * @param object        $object L'objet à mettre à jour
+     * @param string[]|null $ids    La liste des IDs sous la forme `array('id1', 'id2', ...)`
      * 
      * @return boolean `True` si la mise à jour a réussi ou si aucune mise à jour n'etait nécessaire, `False` si la mise à jour a échoué
      */
-    public function update($object, $ids = null) : bool
+    public function update(object $object, array $ids = null) : bool
     {
         $arr = (array)$object;
         $classname = get_class($object);
@@ -330,11 +274,11 @@ class DB
         //Condition builder
         $cond = Array();
         foreach ($ids as $idk => $idv) {
-            $cond[] = new Condition($idk, $idv);
+            $cond[] = new AndCondition($idk, $idv);
         }
 
         //On récupère l'objet d'origine
-        $orig = $this->getItem($tablename, $cond);
+        $orig = $this->getOne($tablename, $cond);
         $origArr = (array)$orig;
 
         //On check les différences entre l'objet do'irigine et l'objet mis à jour
@@ -420,5 +364,30 @@ class DB
     {
         $temp = explode('\\', $table);
         return end($temp);
+    }
+
+    /**
+     * @param string     $tablename
+     * @param array|null $conditions
+     *
+     * @return false|PDOStatement
+     */
+    private function getQuery(string $tablename, ?array $conditions): PDOStatement|false
+    {
+        $this->query = "SELECT * FROM $tablename";
+
+        if ($conditions != null && sizeof($conditions)) {
+            $this->query .= " WHERE ";
+            foreach ($conditions as $key => $condition) {
+                /* @var Condition $condition */
+                $this->query .= $condition->generateQuery($key + 1 < sizeof($conditions));
+            }
+            $query = $this->getDb()->prepare($this->query);
+            foreach ($conditions as $condition) {
+                $param = $condition->generateParam();
+                $query->bindParam($param[0], $param[1]);
+            }
+        }
+        return $query ?? $this->getDb()->prepare($this->query);
     }
 }
