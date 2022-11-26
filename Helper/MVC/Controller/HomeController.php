@@ -38,7 +38,7 @@ class HomeController extends Controller
         // On ajoute la condition unqiuement si des symptomes ont été trouvés
         foreach ($filterList as $filter) {
             if($filter->content == 'symptome') {
-                $value .= $filter->filter;
+                $value .= $filter->filter . '|';
             } else {
                 // Ajoute directement la condition pour la bonne table
                 $conditions[] = new Condition($filter->content, "%" . $filter->filter . "%", 'LIKE');
@@ -49,7 +49,7 @@ class HomeController extends Controller
         if($value != ''){
             // Opérateur pour effectuer plusieurs LIKE sur plusieurs valeurs
             $op = "~*";
-            $condition = new Condition('name', substr($value, 0, -1), $op);
+            $condition = new Condition('name', substr_replace($value, "", -1), $op);
             $symptomes = $context->getAllJoin(Symptome::class, Keywords::class, KeySympt::class, [$condition]);
         }
 

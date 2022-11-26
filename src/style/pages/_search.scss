@@ -33,6 +33,18 @@
   display: inline-block;
   margin: 10px 5px 10px auto;
 
+  &--red {
+    background-color: #ea3f3f;
+  }
+
+  &--blue {
+    background-color: #52aab3;
+  }
+
+  &--purple {
+    background-color: mediumpurple;
+  }
+
   button {
     color: white;
     :hover {
@@ -91,7 +103,7 @@
 }
 
 .table-container {
-  width: 80vw;
+  width: 95vw!important;
   margin: auto;
   background-color: white;
   border-radius: 20px;
