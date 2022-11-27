@@ -117,17 +117,21 @@ class DB
         $finalClass = $this->parseTableName($finalClass); //ClassName Right
 
         $sQuery = "SELECT * FROM $fromClass JOIN $pivotClass ON $fromClass.$pivotKey = $pivotClass.$pivotKey JOIN $finalClass ON $pivotClass.$finalKey = $finalClass.$finalKey";
+        $params = [];
 
         if($conditions != NULL && sizeof($conditions))
         {
             $sQuery .= " WHERE ";
             foreach ($conditions as $i=>$condition) {
                 $sQuery .= $condition->generateQuery($i == 0);
+                $params[] = $condition->generateParam();
             }
         }
 
-
         $query = $this->getDb()->prepare($sQuery);
+        foreach ($params as $i=>$param) {
+            $query->bindParam($param[0], $param[1]);
+        }
         $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
