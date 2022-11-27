@@ -30,9 +30,13 @@ class DB
      * 
      * @return array|false Retourne le resultat de la requête ou False si un truc a merdé
      */
-    public function query(string $query): false|array
+    public function query(string $query, array $parameters): false|array
     {
-        return $this->getDb()->query($query)->fetchAll();
+        $this->query = $query;
+        $this->params = $parameters;
+        $this->stmt = $this->getDb()->prepare($this->query);
+        $this->stmt->execute($this->params);
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     //$Context->getAll("keywords");
@@ -105,6 +109,8 @@ class DB
      */
     public function getJoin(string $fromClass, string $pivotClass, string $finalClass, array $conditions = NULL): bool|array
     {
+        $propertiesToSelect = $this->propertyOfClasses($fromClass, $pivotClass, $finalClass);
+
         $fromVar  = get_class_vars($fromClass);  //Class Left Variables
         $pivotVar = get_class_vars($pivotClass); //Class Join Variables
         $finalVar = get_class_vars($finalClass); //Class Right Variables
@@ -116,17 +122,21 @@ class DB
         $pivotClass = $this->parseTableName($pivotClass); //ClassName Join
         $finalClass = $this->parseTableName($finalClass); //ClassName Right
 
-        $sQuery = "SELECT * FROM $fromClass JOIN $pivotClass ON $fromClass.$pivotKey = $pivotClass.$pivotKey JOIN $finalClass ON $pivotClass.$finalKey = $finalClass.$finalKey";
+        $sQuery = "SELECT " . implode(', ', $propertiesToSelect) .  " FROM $fromClass JOIN $pivotClass ON $fromClass.$pivotKey = $pivotClass.$pivotKey JOIN $finalClass ON $pivotClass.$finalKey = $finalClass.$finalKey";
+        $params = [];
 
         if ($conditions != NULL && sizeof($conditions)) {
             $sQuery .= " WHERE ";
             foreach ($conditions as $i => $condition) {
-                $sQuery .= $condition->generateQuery($i + 1 < sizeof($conditions));
+                $sQuery .= $condition->generateQuery($i == 0);
+                $params[] = $condition->generateParam();
             }
         }
 
-
         $query = $this->getDb()->prepare($sQuery);
+        foreach ($params as $i=>$param) {
+            $query->bindParam($param[0], $param[1]);
+        }
         $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
@@ -164,11 +174,11 @@ class DB
      * Recupère un ou plusieurs attributs d'une table en BDD, avec une condition
      * Les filtres sont configurés avec un tableau de conditions
      * Exemple : $Context->getAll(Keyword::class, [new Condition("idk", 5)])
-     * 
+     *
      * @param string $table  Soit la classe passée en parametre (`Foo::class`) ou son nom en toutes lettres (`"Foo"`)
      * @param string[] $attributs  Tableau des attributs à récupérer dans la requête
      * @param Condition[] $conditions   La liste des conditions à remplir pour filtrer l'objet `[new Condition("id1", "5")]`
-     * 
+     *
      * @return mixed Retourne le resultat parsé sous forme d'objet PDO ou sous forme de classe si la condition est précisée.
      */
     public function getItemsWhere($table, $attributs = ['*'], $conditions = NULL)
@@ -276,9 +286,9 @@ class DB
     /**
      * @author Louisa C.
      * Ajoute un objet dans une table voulue de la BDD, et prend en compte les attributs vides (liés à une insertion automatique par PostgreSQL)
-     * 
+     *
      * @param object $object L'objet à ajouter dans la BDD.
-     * @return boolean Reussite ou non de la requête 
+     * @return boolean Reussite ou non de la requête
      */
     public function insertNotAll($object)
     {
@@ -473,5 +483,16 @@ class DB
             }
         }
         return $query ?? $this->getDb()->prepare($this->query);
+    }
+
+    private function propertyOfClasses(...$classes): array
+    {
+        $properties = array();
+        foreach ($classes as $class) {
+            foreach (get_class_vars($class) as $key => $value) {
+                $properties[] = $this->parseTableName($class) . '.' . $key . ' AS ' . '"' . strtolower($this->parseTableName($class) . '_' . $key) . '"';
+            }
+        }
+        return $properties;
     }
 }

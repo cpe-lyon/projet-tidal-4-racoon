@@ -19,6 +19,11 @@ class InterfaceService {
         return element;
     }
 
+    // function to add a Node to the DOM from String
+    static newRaw(element) {
+        return document.createRange().createContextualFragment(element);
+    }
+
     // function to select a Node from the DOM
     static select(selector, parent = document) {
         return parent.querySelector(selector);

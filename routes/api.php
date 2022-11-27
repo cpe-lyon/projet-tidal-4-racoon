@@ -5,6 +5,7 @@ use Helper\MVC\Controller\HomeController;
 use Helper\MVC\Controller\KeywordsController;
 use Helper\MVC\Controller\MenuController;
 use Helper\App\Routes\Router;
+use Helper\MVC\Controller\PathoController;
 
 /*
  * -------------- FICHIER DE ROUTES --------------
@@ -44,6 +45,8 @@ Router::group('/api', function (){
     Router::group('/patho', function () {
         Router::get('/ping', Controller::class, 'ping');
         Router::post('/get', HomeController::class, 'search');
+        Router::get('/interface', PathoController::class, 'getInterfaces');
+        Router::get('/get/@@', PathoController::class, 'get');
     });
     Router::get('/menu/account', MenuController::class, 'account');
 });
