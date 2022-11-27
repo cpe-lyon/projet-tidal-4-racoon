@@ -16,9 +16,10 @@ composer install
 ```
 
 ## launch
-You need to have a postgresql database running on your computer
+Postgres a besoin d'être lancé sur l'ordinateur ou une machine distante
 
-Use this command to launch php server
+Utiliser cette commande pour lancer un serveur PHP local
+
 ```bash
 php -S localhost:8000 -t public
 ```
