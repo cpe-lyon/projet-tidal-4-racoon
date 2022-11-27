@@ -160,12 +160,12 @@ class DB
     /**
      * Recupère un objet en BDD, parsé avec sa classe
      * 
-     * @param mixed       $class      La classe de l'objet `Foo::class`
+     * @param string      $class      La classe de l'objet `Foo::class`
      * @param Condition[] $conditions Tableau de conditions pour identifier l'objet à retourner
      * 
      * @return mixed Resultat de fetch ou false si un truc a merdé
      */
-    private function getItemClass(mixed $class, array $conditions): mixed
+    private function getItemClass(string $class, array $conditions): mixed
     {
         $tablename = $this->parseTableName($class);
         $query = $this->getQuery($tablename, $conditions);
@@ -374,7 +374,7 @@ class DB
             $this->query .= " WHERE ";
             foreach ($conditions as $key => $condition) {
                 /* @var Condition $condition */
-                $this->query .= $condition->generateQuery($key + 1 < sizeof($conditions));
+                $this->query .= $condition->generateQuery($key + 1 >= sizeof($conditions));
             }
             $query = $this->getDb()->prepare($this->query);
             foreach ($conditions as $condition) {
