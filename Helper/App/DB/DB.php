@@ -18,9 +18,9 @@ use PDOStatement;
  */
 class DB
 {
-    private PDO $db;
-    private string $query;
-    private array $params;
+    protected PDO $db;
+    protected string $query;
+    protected array $params;
 
     /**
      * Juste une requête SQL a executer
@@ -283,9 +283,9 @@ class DB
 
         //On check les différences entre l'objet do'irigine et l'objet mis à jour
         $diff = array();
-        foreach ($arr as $key => $val) {
-            if ($origArr[$key] != $val) {
-                $diff[$key] = $val;
+        foreach ($arr as $key => $value) {
+            if ($origArr[$key] != $value) {
+                $diff[$key] = $value;
             }
         }
 
@@ -297,9 +297,9 @@ class DB
         //Query builder
         $query = "UPDATE $tablename SET ";
         foreach ($diff as $key => $value) {
-            switch (gettype($val)) {
+            switch (gettype($value)) {
                 case 'integer':
-                    $query .= "$key = $val";
+                    $query .= "$key = $value";
                     break;
 
                 case 'boolean':
@@ -308,7 +308,7 @@ class DB
                     break;
                 
                 default: //string ou autres fonctionnent avec des quotes.
-                    $query .= "$key = '$val'";
+                    $query .= "$key = '$value'";
                     break;
             }
             if($key != array_key_last($diff))
@@ -317,24 +317,18 @@ class DB
 
         $query .= " WHERE ";
 
-        foreach ($ids as $key=>$val) {
-            switch (gettype($val)) {
-                case 'integer':
-                    $query .= "$key = $val";
-                    break;
-                
-                default: //string ou autres fonctionnent avec des quotes.
-                    $query .= "$key = '$val'";
-                    break;
-            }
+        foreach ($ids as $key=>$value) {
+            $query .= match (gettype($value)) {
+                'integer' => "$key = $value",
+                default   => "$key = '$value'",
+            };
             if($key != array_key_last($ids))
                 $query .= ' AND ';
         }
         $query .= " RETURNING *";
 
         $ans = $this->getDb()->prepare($query);
-        $ans = $ans->execute();
-        return $ans;
+        return $ans->execute();
     }
 
 

@@ -2,7 +2,7 @@
 
 namespace Helper\MVC\Model;
 
-class searchType
+class SearchType
 {
     public string $content;
     public string $filter;

@@ -1,7 +1,7 @@
 <?php
 namespace Helper\MVC\Controller;
 
-use Helper\App\DB;
+use Helper\App\DB\DB;
 use Helper\MVC\Model\Keywords;
 use Helper\Twig\Page;
 
@@ -13,14 +13,14 @@ class KeywordsController extends Controller
     {
         parent::__construct();
         $context = new DB();
-        $this->keywords = $context->getAll(Keywords::class);;
+        $this->keywords = $context->get(Keywords::class);
     }
 
 
     public function getAll(): array
     {
         $context = new DB();
-        return $context->getAll(Keywords::class);
+        return $context->get(Keywords::class);
     }
 
     private function mapKeywords(Keywords $keyword) {

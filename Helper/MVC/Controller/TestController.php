@@ -2,7 +2,7 @@
 
 namespace Helper\MVC\Controller;
 
-use Helper\App\DB;
+use Helper\App\DB\DB;
 use Helper\MVC\Model\KeySympt;
 use Helper\MVC\Model\Keywords;
 use Helper\MVC\Model\Symptome;

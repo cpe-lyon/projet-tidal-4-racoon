@@ -242,5 +242,6 @@ class Router
             $request = new Request($_GET, $_POST, $_FILES, $_COOKIE, $_SERVER);
             return $controller->$action($request, ...$params);
         }
+        return null;
     }
 }
