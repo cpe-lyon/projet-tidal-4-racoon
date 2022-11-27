@@ -7,9 +7,9 @@ namespace Helper\App\DB;
  * 
  * @author Alexis L. 
  */
-abstract class Condition
+class Condition
 {
-    public static string $queryOperator;
+    public static string $queryOperator = 'AND';
 
     /**
      * Clé sur laquelle se base la condition
