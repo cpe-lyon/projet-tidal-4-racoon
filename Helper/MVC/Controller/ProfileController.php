@@ -3,9 +3,9 @@
 namespace Helper\MVC\Controller;
 
 use Helper\Twig\Page;
-use Helper\App\DB;
+use Helper\App\DB\DB;
 use App\MVC\Model\Users;
-use App\MVC\Model\Condition;
+use Helper\App\DB\Condition;
 use Helper\App\Routes\Request;
 use PDOException;
 
@@ -51,6 +51,7 @@ class ProfileController extends Controller
     {
         var_dump($confirmId);
         var_dump($confirmToken);
+        $this->dbh = new DB();
 
         try {
             $usernameCondition = [new Condition("id", $confirmId)];

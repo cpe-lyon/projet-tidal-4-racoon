@@ -1,6 +1,8 @@
 <?php
 
 use Helper\MVC\Controller\Controller;
+use Helper\MVC\Controller\HomeController;
+use Helper\MVC\Controller\KeywordsController;
 use Helper\MVC\Controller\MenuController;
 use Helper\App\Routes\Router;
 
@@ -34,5 +36,14 @@ use Helper\App\Routes\Router;
 
 Router::group('/api', function (){
     Router::get('/ping', Controller::class, 'ping');
+    Router::group('/keywords', function () {
+        Router::get('/ping', Controller::class, 'ping');
+        Router::get('/get', KeywordsController::class, 'getAll');
+        Router::get('/keyword', KeywordsController::class, 'filterKeyword');
+    });
+    Router::group('/patho', function () {
+        Router::get('/ping', Controller::class, 'ping');
+        Router::post('/get', HomeController::class, 'search');
+    });
     Router::get('/menu/account', MenuController::class, 'account');
 });

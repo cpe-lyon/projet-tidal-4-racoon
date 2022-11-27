@@ -1,5 +1,5 @@
 # check if file Constant.php exist
-if [ -f "./Helper/App/Constant.php" ]
+if [ -f "./Helper/App/Constant.php" ];
 then
     echo "Constant exist"
     exit 0
@@ -25,7 +25,7 @@ read dbpass
 sed -i "s/Constant_Example/Constant/g" "./Helper/App/Constant.php"
 
 # replace 'debugvalue' (with ') by true/false
-if [ "$debug" = "y" ]
+if [ "$debug" = "y" ];
 then
     sed -i "s/'debugvalue'/true/g" "./Helper/App/Constant.php"
 else
