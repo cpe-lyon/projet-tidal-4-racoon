@@ -58,15 +58,15 @@ class HomeController extends Controller
         }
 
         // Récupérations des ids des symptomes
-        if (sizeof($symptomes) > 0) {
-            $idsArray = '(';
+        if(sizeof($symptomes) > 0) {
+            $idsArray = [];
             foreach ($symptomes as $symptome) {
-                $idsArray .= $symptome->symptome_ids . ', ';
+                $idsArray[] .= $symptome->symptome_ids;
             }
-            $idsArray = substr($idsArray, 0, -2) . ')';
             $op = "IN";
-            $conditions[] = new AndCondition('Symptome.ids', $idsArray, $op, $idsArray);
+            $conditions[] = new AndCondition('Symptome.ids', $idsArray, $op);
         }
+
         return $context->getJoin(Patho::class, SymptPatho::class, Symptome::class, $conditions);
     }
 }

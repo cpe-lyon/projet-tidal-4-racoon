@@ -131,7 +131,12 @@ class DB
             $sQuery .= " WHERE ";
             foreach ($conditions as $i => $condition) {
                 $sQuery .= $condition->generateQuery($i == 0);
-                $params[] = $condition->generateParam();
+                $param = $condition->generateParam();
+                if ($condition->isLike) {
+                    $params = array_merge($params, $param);
+                } else {
+                    $params[] = $param;
+                }
             }
         }
 
@@ -139,7 +144,7 @@ class DB
         foreach ($params as $i => $param) {
             $query->bindParam($param[0], $param[1]);
         }
-        $query->execute();
+            $query->execute();
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
