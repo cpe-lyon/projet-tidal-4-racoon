@@ -10,12 +10,16 @@ use Helper\MVC\Model\KeySympt;
 use Helper\MVC\Model\Keywords;
 use Helper\MVC\Model\Symptome;
 use Helper\Twig\Page;
+use Helper\MVC\Controller\ProfileController;
 
 class HomeController extends Controller
 {
     public function index(): Page
     {
-        $this->params = [];
+        $pc = new ProfileController;
+        $isLogged = $pc->isLogged();
+
+        $this->params = ["isLogged" => $isLogged];
         return new Page('home.tpl.twig', $this->params);
     }
     public function about(): Page
@@ -37,7 +41,7 @@ class HomeController extends Controller
         // Pour chaque symptome on le format dans une liste de string
         // On ajoute la condition unqiuement si des symptomes ont été trouvés
         foreach ($filterList as $filter) {
-            if($filter->content == 'symptome') {
+            if ($filter->content == 'symptome') {
                 $value .= $filter->filter . '|';
             } else {
                 // Ajoute directement la condition pour la bonne table
@@ -46,7 +50,7 @@ class HomeController extends Controller
         }
         // Des keywords pour les symptomes sont présents, on va récupérer les ids des symptomes
         $symptomes = [];
-        if($value != ''){
+        if ($value != '') {
             // Opérateur pour effectuer plusieurs LIKE sur plusieurs valeurs
             $op = "~*";
             $condition = new AndCondition('name', substr_replace($value, "", -1), $op);
@@ -54,7 +58,7 @@ class HomeController extends Controller
         }
 
         // Récupérations des ids des symptomes
-        if(sizeof($symptomes) > 0) {
+        if (sizeof($symptomes) > 0) {
             $idsArray = '(';
             foreach ($symptomes as $symptome) {
                 $idsArray .= $symptome->symptome_ids . ', ';

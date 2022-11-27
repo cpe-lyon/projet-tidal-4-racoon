@@ -1,0 +1,54 @@
+.notif-container {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.notif {
+  z-index: 99;
+  overflow-y: scroll;
+  min-width: 300px;
+  width: fit-content;
+  max-width: 80%;
+  height: fit-content;
+  max-height: 100px;
+  border: 0.5px solid #001f23;
+  border-radius: 20px;
+  padding: 20px;
+  background-color: #89f2ff;
+
+  * {
+    margin: 0;
+  }
+  &.success {
+    background-color: #aef4a0;
+    border-color: #002201;
+  }
+  &.error {
+    background-color: #ffdad6;
+    border-color: #410002;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    margin: 12px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #0000007c;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #00000094;
+  }
+}

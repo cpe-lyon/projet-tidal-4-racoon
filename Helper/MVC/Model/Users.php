@@ -12,7 +12,7 @@ class Users
     public string $lastname;
     public string $mail;
     public string $password;
-    public DateTime $creationdate;
+    public string $creationdate;
     public string $confirmationtoken;
     public DateTime $confirmationdate;
 }

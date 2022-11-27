@@ -40,8 +40,8 @@ Router::get('/test', TestController::class, 'index');
 
 Router::get('/profil', ProfileController::class, 'profile');
 Router::post('/profil', ProfileController::class, 'profile');
-
-Router::get('/profil/confirm/@@/@@', ProfileController::class, 'confirmProfile');
+Router::get('/profil/@@', ProfileController::class, 'profileEdit');
+Router::post('/profil/@@', ProfileController::class, 'profileEditSubmit');
 
 Router::get('/inscription', ProfileController::class, 'register');
 Router::post('/inscription', ProfileController::class, 'register');

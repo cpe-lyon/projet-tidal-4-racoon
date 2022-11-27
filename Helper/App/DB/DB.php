@@ -136,7 +136,7 @@ class DB
         }
 
         $query = $this->getDb()->prepare($sQuery);
-        foreach ($params as $i=>$param) {
+        foreach ($params as $i => $param) {
             $query->bindParam($param[0], $param[1]);
         }
         $query->execute();
@@ -195,16 +195,19 @@ class DB
             $qString = "SELECT $attributsString FROM $table WHERE ";
 
             foreach ($conditions as $i => $condition) {
-                $qString .= $condition->key . " " . $condition->operator . " " . $condition->value;
-                if ($i + 1 < sizeof($conditions)) {
-                    $qString .= " AND ";
-                }
+                $qString .= $condition->generateQuery($i == 0);
             }
         }
 
-        var_dump($qString);
-
         $query = $this->getDb()->prepare($qString);
+
+        if (isset($conditions)) {
+            foreach ($conditions as $i => $condition) {
+                $param = $condition->generateParam();
+                $query->bindParam($param[0], $param[1]);
+            }
+        }
+
         $query->execute();
         return $query->fetch(PDO::FETCH_OBJ);
     }
