@@ -122,7 +122,7 @@ class DB
         {
             $sQuery .= " WHERE ";
             foreach ($conditions as $i=>$condition) {
-                $sQuery .= $condition->generateQuery($i + 1 < sizeof($conditions));
+                $sQuery .= $condition->generateQuery($i == 0);
             }
         }
 

@@ -10,4 +10,9 @@ namespace Helper\App\DB;
 class OrCondition extends Condition
 {
     public static string $queryOperator = 'OR';
+
+    public function generateQuery(bool $first): string
+    {
+        return ($first ? '': ' ' . self::$queryOperator ) . ' ' . $this->key . ' ' . $this->operator . ' :' . $this->key;
+    }
 }
