@@ -2,10 +2,6 @@
 
 namespace Helper\Models;
 
-
-
-
-
 /**
  * Classe Condition pour parametrer des conditions SQL sur le DBContext
  * 
@@ -56,12 +52,15 @@ class Condition
     {
         $this->key = $key;
 
-        if(is_bool($val))
-        { $this->value = $val?"TRUE":"FALSE"; }
-        if(is_string($val))
-        { $this->value = "'$val'"; }
-        if(is_int($val))
-        { $this->value = $val; }
+        if (is_bool($val)) {
+            $this->value = $val ? "TRUE" : "FALSE";
+        }
+        if (is_string($val)) {
+            $this->value = "'$val'";
+        }
+        if (is_int($val)) {
+            $this->value = $val;
+        }
 
         $this->op = $op;
     }
