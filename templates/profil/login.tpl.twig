@@ -22,6 +22,10 @@
 
 </div>
 
+{% if error %}
+{{ include('component/toast.twig', {type: 'error', title: errorTitle, description: errorDesc}) }}
+{% endif %}
+
 {% endblock %}
 
 {% block javascripts %}

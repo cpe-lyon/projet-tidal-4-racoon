@@ -190,8 +190,6 @@ class DB
             }
         }
 
-        var_dump($qString);
-
         $query = $this->getDb()->prepare($qString);
         $query->execute();
         return $query->fetch(PDO::FETCH_OBJ);

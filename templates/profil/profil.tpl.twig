@@ -1,4 +1,9 @@
 {% extends "base/base.tpl.twig" %}
+{% set translateMonthHash = { 
+        "January": "Janvier", 
+        "November": "Novembre"
+    } 
+%}
 
 {% block body %}
 
@@ -12,60 +17,61 @@
     
     <div class="profile-header">
         {# Class = profile-edit__picture #}
-        <img class="profile__picture" src="" alt="Phot de profil">
+        <img class="profile__picture" src="/src/img/profile-picture.png" alt="Photo de profil">
     </div>
 
-    <div class="profile-main">
+    <form method="post">
+        <div class="profile-main">
 
-        {# Class = profile-edit__username #}
-        <div class="profile__username">
-            <input type="text" name="" id="" class="profile-form__input" placeholder="Nom d'utilisateur">
+            {# Class = profile-edit__username #}
+            <div class="profile__username">
+                <input type="text" name="" id="" class="profile-form__input" placeholder="Nom d'utilisateur" value="{{ user.username }}">
+            </div>
+
+            {# Class = profile-edit__infos #}
+            <div class="profile__infos">
+                <input type="text" name="" id="" class="profile-form__input" placeholder="Prénom" value="{{ user.name }}">
+                <input type="text" name="" id="" class="profile-form__input" placeholder="Nom" value="{{ user.lastname }}">
+                <input type="text" name="" id="" class="profile-form__input" placeholder="Mail" value="{{ user.mail }}">
+                <input type="text" name="" id="" class="profile-form__input" placeholder="Confirmer le nouveau mail">
+            </div>
+
         </div>
 
-        {# Class = profile-edit__infos #}
-        <div class="profile__infos">
-            <input type="text" name="" id="" class="profile-form__input" placeholder="Prénom">
-            <input type="text" name="" id="" class="profile-form__input" placeholder="Nom">
-            <input type="text" name="" id="" class="profile-form__input" placeholder="Mail">
-            <input type="text" name="" id="" class="profile-form__input" placeholder="Confirmer le nouveau mail">
+        <div class="profile-footer">
+            <div class="login__form-foot">
+                <button class="profile-form__submit-btn" type="submit">Enregistrer</button>
+            </div>
         </div>
-
-    </div>
-
-    <div class="profile-footer">
-        <div class="login__form-foot">
-            <button class="profile-form__submit-btn" type="submit">Enregistrer</button>
-        </div>
-    </div>
+    </form>
 
     {% else %}
 
     <div class="profile-header">
-        <img class="profile__picture" src="" alt="Phot de profil">
+        <img class="profile__picture" src="/src/img/profile-picture.png" alt="Photo de profil">
     </div>
 
     <div class="profile-main">
         <div class="profile__username">
-            <p>Username</p>
+            <p>{{ user.username }}</p>
         </div>
 
         <div class="profile__infos">
-            <p class="profile__infos-line">Prénom</p>
-            <p class="profile__infos-line">Nom</p>
-            <p class="profile__infos-line">Mail</p>
-            <p class="profile__creation-date">Membre depuis Mai 2022</p>
+            <p class="profile__infos-line">{{ user.name }} {{ user.lastname }}</p>
+            <p class="profile__infos-line">{{ user.mail }}</p>
+            <p class="profile__creation-date">Membre depuis {{user.creationdate }}</p>
         </div>
 
         <div class="profile__actions">
-            <span class="profile__action-line">
+            <span class="profile__action-line" onclick="window.location.replace('/profil/edit')">
                 <div class="profile__action-icon"></div>
                 <p class="profile__action-title">Editer mon profil</p>
             </span>
-            <span class="profile__action-line">
+            <span class="profile__action-line" onclick="window.location.replace('/profil/password')">
                 <div class="profile__action-icon"></div>
-                <p class="profile__action-title">Modifier mon mot de passe - {{ passwordEditing }}</p>
+                <p class="profile__action-title">Modifier mon mot de passe</p>
             </span>
-            <span class="profile__action-line">
+            <span class="profile__action-line" onclick="window.location.replace('/profil/logout')">
                 <div class="profile__action-icon"></div>
                 <p class="profile__action-title">Déconnexion</p>
             </span>
@@ -73,14 +79,12 @@
     </div>
 
     <div class="profile-footer">
-        <p>Copyright</p>
-        <p>Blablabla</p>
     </div>
        
         {% if passwordEditing %}
 
         <div class="pwd-edit__container">
-            <div class="pwd-edit profile-form__container">
+            <form method="post" class="pwd-edit profile-form__container">
 
                 <div class="login__form-main">
 
@@ -99,10 +103,10 @@
                 </div>
                 
                 <div class="login__form-foot">
-                    <button class="profile-form__submit-btn" type="submit"></button>
+                    <button class="profile-form__submit-btn" type="submit">Enregistrer</button>
                 </div>
             
-            </div>
+            </form>
         </div>
 
         {% endif %}
@@ -132,5 +136,8 @@
 
 {% endif %}
 
-{% endblock %}
+{% if registerSuccess %}
+{{ include('component/toast.twig', {type: 'success', title: 'bar', description: 'oui'}) }}
+{% endif %}
 
+{% endblock %}

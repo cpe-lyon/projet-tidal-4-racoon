@@ -1,5 +1,8 @@
 // Import de tous les fichiers SCSS à compiler dans le main.css
 
+// COMPONENTS
+@import "components/toast";
+
 // GENERAL
 @import "general/variables";
 @import "general/typographies";
