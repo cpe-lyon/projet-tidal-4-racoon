@@ -1,14 +1,15 @@
 <?php
 
-namespace Helper\MVC;
+namespace Helper\MVC\Controller;
 
 use Helper\Twig\Page;
 use Helper\App\DB;
-use Helper\Models\Condition;
-use Helper\Models\Users;
+use App\MVC\Model\Users;
+use App\MVC\Model\Condition;
+use Helper\App\Routes\Request;
 use PDOException;
 
-class ProfilController extends Controller
+class ProfileController extends Controller
 {
     protected DB $dbh; // Initialisation BDD
     public bool $isConnected = true;
@@ -46,11 +47,11 @@ class ProfilController extends Controller
         return new Page('profil/login.tpl.twig');
     }
 
-    public function confirmProfile(int $confirmId, int $confirmToken): Page
+    public function confirmProfile(Request $request, int $confirmId, string $confirmToken): Page
     {
         var_dump($confirmId);
         var_dump($confirmToken);
-        /*
+
         try {
             $usernameCondition = [new Condition("id", $confirmId)];
             $userInfos = $this->dbh->getItemsWhere("users", ['*'], $usernameCondition);
@@ -74,12 +75,10 @@ class ProfilController extends Controller
             $_SESSION['user'] = $userInfos;
 
             var_dump($_SESSION['user']);
-
-            return new Page('profil/profil.tpl.twig');
         } else {
             $_SESSION['flash']['danger'] = "Ce token n'est plus valide";
-            return new Page('profil/login.tpl.twig');
-        }*/
+        }
+
         $params = [
             'isConnected' => $this->isConnected,
             'profileEditing' => $this->profileEditing,

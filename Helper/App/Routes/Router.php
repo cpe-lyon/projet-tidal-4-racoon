@@ -2,10 +2,10 @@
 
 namespace Helper\App\Routes;
 
+use Helper\MVC\Controller\Controller;
 use Defr\PhpMimeType\MimeType;
-use Helper\App\Constant;
-use Helper\MVC\Controller;
 use Exception;
+use Helper\App\Constant;
 
 /*
  * Class Routeur pour gérer les Routes existantes 
@@ -60,7 +60,7 @@ class Router
      */
     public static function get(string $route, string $controller, string $action): void
     {
-        self::getInstance()->registerGet($route, $controller, $action);
+        self::getInstance()->registerGet('/' . trim($route, '/'), $controller, $action);
     }
 
     /*
@@ -68,7 +68,7 @@ class Router
      */
     public static function post(string $route, string $controller, string $action): void
     {
-        self::getInstance()->registerPost($route, $controller, $action);
+        self::getInstance()->registerPost('/' . trim($route, '/'), $controller, $action);
     }
 
     /*
@@ -76,7 +76,7 @@ class Router
      */
     public static function put(string $route, string $controller, string $action): void
     {
-        self::getInstance()->registerPut($route, $controller, $action);
+        self::getInstance()->registerPut('/' . trim($route, '/'), $controller, $action);
     }
 
     /*
@@ -84,7 +84,7 @@ class Router
      */
     public static function delete(string $route, string $controller, string $action): void
     {
-        self::getInstance()->registerDelete($route, $controller, $action);
+        self::getInstance()->registerDelete('/' . trim($route, '/'), $controller, $action);
     }
 
     /*
@@ -144,16 +144,13 @@ class Router
         }
         $routes = $this->getRoutes($method);
 
-        $route = explode('/', $route);
-        foreach ($route as &$value) {
-            if(ctype_digit($value)){
-                $value = '@@';
+        foreach ($routes as $key => $existingRoute)
+        {
+            if(preg_match('/^' . str_replace(['@@', '/'], ['[A-z0-9-_]+', '\/'], $key) . '$/', $route)) {
+                return $existingRoute;
             }
         }
-        $route = implode('/', $route);
-        if (array_key_exists($route, $routes)) {
-            return $routes[$route];
-        }
+
         if(str_starts_with($route, '/src/')){
             $this->returnFile($route);
             $this->returnFile($route . '.js');
@@ -203,7 +200,12 @@ class Router
     public function getURI(): string
     {
         if ($this->route === null) {
-            $this->route = $_SERVER['REQUEST_URI'];
+            // remove query string
+            $uri = $_SERVER['REQUEST_URI'];
+            $uri = explode('?', $uri)[0];
+            $uri = explode('#', $uri)[0];
+            $uri = trim($uri, '/');
+            $this->route = '/' . $uri;
         }
         while ($this->route !== '/' && str_ends_with($this->route, '/')) {
             (new Controller())->redirect(substr($this->route, 0, -1));
@@ -237,7 +239,8 @@ class Router
             $controller = new $controller();
             $action = $route->getAction();
             $params = $route->getParams();
-            return $controller->$action(...$params);
+            $request = new Request($_GET, $_POST, $_FILES, $_COOKIE, $_SERVER);
+            return $controller->$action($request, ...$params);
         }
     }
 }

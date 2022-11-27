@@ -1,6 +1,6 @@
 <?php
 
-namespace Helper\Models;
+namespace Helper\MVC\Model;
 
 class Symptome
 {

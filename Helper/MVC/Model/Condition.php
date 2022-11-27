@@ -1,6 +1,6 @@
 <?php
 
-namespace Helper\Models;
+namespace App\MVC\Model;
 
 /**
  * Classe Condition pour parametrer des conditions SQL sur le DBContext
