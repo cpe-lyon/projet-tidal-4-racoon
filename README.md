@@ -7,9 +7,13 @@
 
 ## Installation
 
+Installer les dependances PHP
+
 ```bash
 composer install
 ```
+
+Enregistrer les variables d'environnement
 
 ```bash
 ./init.sh
