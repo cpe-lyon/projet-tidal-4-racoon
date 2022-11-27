@@ -53,12 +53,7 @@ class Condition
     public function __construct(string $key, mixed $value, string $operator = "=", string $brutBalue = "")
     {
         $this->key = $key;
-        if(is_bool($value))
-        { $this->value = $value?"TRUE":"FALSE"; }
-        if(is_string($value))
-        { $this->value = "'$value'"; }
-        if(is_int($value))
-        { $this->value = $value; }
+        $this->value = $value;
         if($brutBalue != "")
         { $this->value = $brutBalue; }
 
