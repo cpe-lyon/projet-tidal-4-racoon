@@ -34,7 +34,7 @@ Pour récupérer toute les données d'une table, on utilise
 le Model associé à cette table :
 
 ```php
-$users = $db->getAll(User::class);
+$users = $db->get(User::class);
 ```
 
 ici on récupère toutes les données de la table `user`
@@ -43,7 +43,7 @@ Pour récupérer une seule donnée, on utilise la méthode
 `getItem` avec les conditions souhaitées :
 
 ```php
-$user = $db->getItem(User::class);
+$user = $db->getOne(User::class);
 ```
 
 Ici on récupère le premier utilisateur de la table `user`
@@ -54,7 +54,7 @@ récupérer les données souhaitées :
 
 ```php
 $conditions = [new Condition("id", 5)];
-$user = $db->getItem(User::class, $conditions);
+$user = $db->getOne(User::class, $conditions);
 ```
 
 Ici on récupère l'utilisateur dont l'id est égal à 5
@@ -66,7 +66,7 @@ $conditions = [
     new Condition("id", 5),
     new Condition("name", "John")
 ];
-$user = $db->getItem(User::class, $conditions);
+$user = $db->getOne(User::class, $conditions);
 ```
 
 Ici on récupère l'utilisateur dont l'id est égal à 5
@@ -80,7 +80,7 @@ $conditions = [
     new Condition("name", "Marie", "!="),
     new Condition("age", "5", "=")
 ];
-$user = $db->getAll(User::class, $conditions);
+$user = $db->get(User::class, $conditions);
 ```
 
 Ici on récupère tous les utilisateurs dont le nom
@@ -101,10 +101,10 @@ $db->insert($user);
 ### Pivot/Jointure
 
 Pour faire un pivot entre deux tables, il faut utiliser
-la méthode `getAllJoin` :
+la méthode `getJoin` :
 
 ```php
-$users = $db->getAllJoin(User::class, UserToRole::class, Role::class, $conditions);
+$users = $db->getJoin(User::class, UserToRole::class, Role::class, $conditions);
 ```
 
 Ici un utilisateur peut avoir plusieurs rôles, et un
@@ -123,7 +123,7 @@ la méthode `update` :
 $conditions = [
     new Condition("id", 5),
 ];
-$user = $db->getItem(User::class, $conditions);
+$user = $db->getOne(User::class, $conditions);
 $user->setName("John");
 $user->setAge(25);
 $db->update($user, 5);
@@ -135,5 +135,5 @@ Pour faire une requête personnalisée, on utilise
 la méthode `rawQuery` :
 
 ```php
-$users = $db->rawQuery("SELECT * FROM user");
+$users = $db->query("SELECT * FROM user");
 ```
