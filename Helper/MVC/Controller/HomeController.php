@@ -61,7 +61,7 @@ class HomeController extends Controller
         if (sizeof($symptomes) > 0) {
             $idsArray = '(';
             foreach ($symptomes as $symptome) {
-                $idsArray .= $symptome->ids . ', ';
+                $idsArray .= $symptome->symptome_ids . ', ';
             }
             $idsArray = substr($idsArray, 0, -2) . ')';
             $op = "IN";
