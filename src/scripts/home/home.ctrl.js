@@ -41,7 +41,7 @@ class HomeCtrl {
             let svgIcon = "";
             let badgeClass = "";
             switch ($( "#filterType option:selected" ).text()) {
-                case 'Symptomes':
+                case 'Mot clé':
                     svgIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bandaid-fill" viewBox="0 0 16 16">\n' +
                     '  <path d="m2.68 7.676 6.49-6.504a4 4 0 0 1 5.66 5.653l-1.477 1.529-5.006 5.006-1.523 1.472a4 4 0 0 1-5.653-5.66l.001-.002 1.505-1.492.001-.002Zm5.71-2.858a.5.5 0 1 0-.708.707.5.5 0 0 0 .707-.707ZM6.974 6.939a.5.5 0 1 0-.707-.707.5.5 0 0 0 .707.707ZM5.56 8.354a.5.5 0 1 0-.707-.708.5.5 0 0 0 .707.708Zm2.828 2.828a.5.5 0 1 0-.707-.707.5.5 0 0 0 .707.707Zm1.414-2.121a.5.5 0 1 0-.707.707.5.5 0 0 0 .707-.707Zm1.414-.707a.5.5 0 1 0-.706-.708.5.5 0 0 0 .707.708Zm-4.242.707a.5.5 0 1 0-.707.707.5.5 0 0 0 .707-.707Zm1.414-.707a.5.5 0 1 0-.707-.708.5.5 0 0 0 .707.708Zm1.414-2.122a.5.5 0 1 0-.707.707.5.5 0 0 0 .707-.707ZM8.646 3.354l4 4 .708-.708-4-4-.708.708Zm-1.292 9.292-4-4-.708.708 4 4 .708-.708Z"/>\n' +
                     '</svg>';
@@ -84,7 +84,7 @@ class HomeCtrl {
             const selectFilter = document.getElementById('filterType');
             const filter = selectFilter.options[selectFilter.selectedIndex].text;
             console.log(filter);
-            if(filter === 'Filtre' || filter === 'Symptomes' || filter === '' || filter === undefined) {
+            if(filter === 'Filtre' || filter === 'Mot clé' || filter === '' || filter === undefined) {
                 return;
             }
             const id = this.filterValue[filter] + '-' + filterInput.value;
@@ -111,7 +111,7 @@ class HomeCtrl {
         }
 
         $(document).click(() => {
-            if($( "#filterType option:selected" ).text() === 'Symptomes') {
+            if($( "#filterType option:selected" ).text() === 'Mot clé') {
                 this.deleteSuggestions();
             }
         })
@@ -134,7 +134,7 @@ class HomeCtrl {
         // Quand l'utilisateur insère des lettres dans le champs de recherche on lance la recherche de keywords
         $('#search').on('input', () => {
             const filter = $( "#filterType option:selected" ).text();
-            if(filter !== 'Symptomes') {
+            if(filter !== 'Mot clé') {
                 return;
             }
             this.service.filterKeywords(filterInput.value).then((response) => {

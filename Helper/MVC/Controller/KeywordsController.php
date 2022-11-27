@@ -13,7 +13,8 @@ class KeywordsController extends Controller
     {
         parent::__construct();
         $context = new DB();
-        $this->keywords = $context->get(Keywords::class);
+        $keywords = $context->get(Keywords::class);
+        $this->keywords = $keywords;
     }
 
 

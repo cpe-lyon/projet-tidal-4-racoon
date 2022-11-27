@@ -62,6 +62,7 @@ class DB
             return $this->getAllClass($table, $conditions);
         }
         $query = $this->getQuery($table, $conditions);
+
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -87,6 +88,7 @@ class DB
     {
         $tablename = $this->parseTableName($class);
         $query = $this->getQuery($tablename, $conditions);
+        $query->execute();
         return $query->fetchAll(PDO::FETCH_CLASS, $class);
     }
 
