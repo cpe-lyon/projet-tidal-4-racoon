@@ -2,7 +2,7 @@
 
 use Helper\MVC\Controller\Controller;
 use Helper\MVC\Controller\HomeController;
-use Helper\MVC\Controller\ProfilController;
+use Helper\MVC\Controller\ProfileController;
 use Helper\MVC\Controller\TestController;
 use Helper\App\Routes\Router;
 
@@ -37,8 +37,16 @@ Router::get('/error/@@', Controller::class, 'error');
 Router::get('/index.php', Controller::class, 'errorIndex');
 Router::get('/', HomeController::class, 'index');
 Router::get('/test', TestController::class, 'index');
-Router::get('/profil', ProfilController::class, 'profile');
-Router::post('/profil', ProfilController::class, 'profile');
-Router::get('/inscription', ProfilController::class, 'register');
-Router::get('/connexion', ProfilController::class, 'login');
+
+Router::get('/profil', ProfileController::class, 'profile');
+Router::post('/profil', ProfileController::class, 'profile');
+
+Router::get('/profil/confirm/@@/@@', ProfileController::class, 'confirmProfile');
+
+Router::get('/inscription', ProfileController::class, 'register');
+Router::post('/inscription', ProfileController::class, 'register');
+
+Router::get('/connexion', ProfileController::class, 'login');
+Router::post('/connexion', ProfileController::class, 'login');
+
 Router::get('/about', HomeController::class, 'about');

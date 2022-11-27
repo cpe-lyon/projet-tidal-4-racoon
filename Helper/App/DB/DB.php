@@ -125,10 +125,9 @@ class DB
         $sQuery = "SELECT " . implode(', ', $propertiesToSelect) .  " FROM $fromClass JOIN $pivotClass ON $fromClass.$pivotKey = $pivotClass.$pivotKey JOIN $finalClass ON $pivotClass.$finalKey = $finalClass.$finalKey";
         $params = [];
 
-        if($conditions != NULL && sizeof($conditions))
-        {
+        if ($conditions != NULL && sizeof($conditions)) {
             $sQuery .= " WHERE ";
-            foreach ($conditions as $i=>$condition) {
+            foreach ($conditions as $i => $condition) {
                 $sQuery .= $condition->generateQuery($i == 0);
                 $params[] = $condition->generateParam();
             }
@@ -163,9 +162,49 @@ class DB
         if (str_contains($table, '\\')) {
             return $this->getItemClass($table, $conditions);
         }
+
         $this->stmt = $this->getQuery($table, $conditions);
         $this->stmt->execute();
         return $this->stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+
+    /**
+     * @author Louisa C.
+     * Recupère un ou plusieurs attributs d'une table en BDD, avec une condition
+     * Les filtres sont configurés avec un tableau de conditions
+     * Exemple : $Context->getAll(Keyword::class, [new Condition("idk", 5)])
+     *
+     * @param string $table  Soit la classe passée en parametre (`Foo::class`) ou son nom en toutes lettres (`"Foo"`)
+     * @param string[] $attributs  Tableau des attributs à récupérer dans la requête
+     * @param Condition[] $conditions   La liste des conditions à remplir pour filtrer l'objet `[new Condition("id1", "5")]`
+     *
+     * @return mixed Retourne le resultat parsé sous forme d'objet PDO ou sous forme de classe si la condition est précisée.
+     */
+    public function getItemsWhere($table, $attributs = ['*'], $conditions = NULL)
+    {
+        // Construction de la liste des attributs
+        $attributsString = implode(",", $attributs);
+
+        if ($conditions == NULL || !sizeof($conditions)) {
+            // Si aucune condition précisée, on construit quand même une requête valide
+            $qString = "SELECT $attributsString FROM $table";
+        } else {
+            $qString = "SELECT $attributsString FROM $table WHERE ";
+
+            foreach ($conditions as $i => $condition) {
+                $qString .= $condition->key . " " . $condition->operator . " " . $condition->value;
+                if ($i + 1 < sizeof($conditions)) {
+                    $qString .= " AND ";
+                }
+            }
+        }
+
+        var_dump($qString);
+
+        $query = $this->getDb()->prepare($qString);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_OBJ);
     }
 
 
@@ -213,28 +252,26 @@ class DB
         $classname = get_class($object);
         $tablename = $this->parseTableName($classname);
         $query = 'INSERT INTO ' . $tablename . ' (';
-        
+
         $keys = get_class_vars($classname);
-        foreach ($object as $key=>$value) 
-        {
+        foreach ($object as $key => $value) {
             $query .= $key;
 
-            if($key != array_key_last($keys)) {
+            if ($key != array_key_last($keys)) {
                 $query .= ', ';
             }
         }
 
         $query .= ") VALUES (";
 
-        foreach ($object as $key=>$value) 
-        {
+        foreach ($object as $key => $value) {
             $query .= match (gettype($value)) {
                 'boolean' => $value ? "'True'" : "'False'",
                 'integer' => $value,
                 default   => '\'' . $value . '\'',
             };
-            
-            if($key != array_key_last($keys)) {
+
+            if ($key != array_key_last($keys)) {
                 $query .= ', ';
             }
         }
@@ -245,6 +282,56 @@ class DB
             ->getDb()
             ->prepare($query)
             ->execute();
+    }
+
+
+    /**
+     * @author Louisa C.
+     * Ajoute un objet dans une table voulue de la BDD, et prend en compte les attributs vides (liés à une insertion automatique par PostgreSQL)
+     *
+     * @param object $object L'objet à ajouter dans la BDD.
+     * @return boolean Reussite ou non de la requête
+     */
+    public function insertNotAll($object)
+    {
+        $classname = get_class($object);
+        $tablename = $this->parseTableName($classname);
+        $query = 'INSERT INTO ' . $tablename . ' (';
+
+        $keys = get_class_vars($classname);
+        foreach ($object as $key => $value) {
+            if ($value) {
+                $query .= $key . ', ';
+            }
+        }
+        $query = substr($query, 0, -2);
+
+        $query .= ") VALUES (";
+
+        foreach ($object as $key => $value) {
+            if ($value) {
+                switch (gettype($value)) {
+                    case 'boolean':
+                        $query .= $value ? "'True'" : "'False'";
+                        break;
+                    case 'integer':
+                        $query .= $value;
+                        break;
+
+                    default: //string ou autres fonctionnent avec des quotes.
+                        $query .= '\'' . $value . '\'';
+                        break;
+                }
+                $query .= ', ';
+            }
+        }
+        $query = substr($query, 0, -2);
+
+        $query .= ")";
+
+        $ans = $this->getDb()->prepare($query);
+        $ans = $ans->execute();
+        return $ans;
     }
 
 
@@ -266,7 +353,7 @@ class DB
      * 
      * @return boolean `True` si la mise à jour a réussi ou si aucune mise à jour n'etait nécessaire, `False` si la mise à jour a échoué
      */
-    public function update(object $object, array $ids = null) : bool
+    public function update(object $object, array $ids = null): bool
     {
         $arr = (array)$object;
         $classname = get_class($object);
@@ -274,10 +361,9 @@ class DB
 
 
         //On parse les IDs pour identifier l'objet à mettre à jour. Par défaut on prends le premier champ si l'ID n'est pas spécifié
-        if($ids == null)
-            $ids = Array(array_keys($arr)[0] => array_values($arr)[0]);
-        else
-        {
+        if ($ids == null) {
+            $ids = array(array_keys($arr)[0] => array_values($arr)[0]);
+        } else {
             $temp = array();
             foreach ($ids as $key => $value) {
                 $temp[$value] = $arr[$value];
@@ -286,7 +372,7 @@ class DB
         }
 
         //Condition builder
-        $cond = Array();
+        $cond = array();
         foreach ($ids as $idk => $idv) {
             $cond[] = new AndCondition($idk, $idv);
         }
@@ -304,10 +390,11 @@ class DB
         }
 
         //Si l'objet est identique, on retourne
-        if(count($diff) == 0)
-        { return false; } 
+        if (count($diff) == 0) {
+            return false;
+        }
 
-        
+
         //Query builder
         $query = "UPDATE $tablename SET ";
         foreach ($diff as $key => $value) {
@@ -320,23 +407,24 @@ class DB
                     $query .= "$key = ";
                     $query .= $value ? "'True'" : "'False'";
                     break;
-                
+
                 default: //string ou autres fonctionnent avec des quotes.
                     $query .= "$key = '$value'";
                     break;
             }
-            if($key != array_key_last($diff))
+            if ($key != array_key_last($diff)) {
                 $query .= ', ';
+            }
         }
 
         $query .= " WHERE ";
 
-        foreach ($ids as $key=>$value) {
+        foreach ($ids as $key => $value) {
             $query .= match (gettype($value)) {
                 'integer' => "$key = $value",
                 default   => "$key = '$value'",
             };
-            if($key != array_key_last($ids))
+            if ($key != array_key_last($ids))
                 $query .= ' AND ';
         }
         $query .= " RETURNING *";
