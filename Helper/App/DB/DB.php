@@ -21,6 +21,7 @@ class DB
     protected PDO $db;
     protected string $query;
     protected array $params;
+    public ?PDOStatement $stmt = null;
 
     /**
      * Juste une requête SQL a executer
@@ -152,8 +153,9 @@ class DB
         if (str_contains($table, '\\')) {
             return $this->getItemClass($table, $conditions);
         }
-        $query = $this->getQuery($table, $conditions);
-        return $query->fetch(PDO::FETCH_OBJ);
+        $this->stmt = $this->getQuery($table, $conditions);
+        $this->stmt->execute();
+        return $this->stmt->fetch(PDO::FETCH_OBJ);
     }
 
 
@@ -168,8 +170,10 @@ class DB
     private function getItemClass(string $class, array $conditions): mixed
     {
         $tablename = $this->parseTableName($class);
-        $query = $this->getQuery($tablename, $conditions);
-        return $query->fetch(PDO::FETCH_CLASS, $class);
+        $this->stmt = $this->getQuery($tablename, $conditions);
+        $this->stmt->setFetchMode(PDO::FETCH_CLASS, $class);
+        $this->stmt->execute();
+        return $this->stmt->fetch(PDO::FETCH_CLASS);
     }
 
     //Exemple : 

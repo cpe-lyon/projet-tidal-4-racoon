@@ -34,7 +34,7 @@ class Response
      * @see HTTP::*
      * @see https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP
      */
-    private int $statusCode;
+    private mixed $statusCode;
     /**
      * @var mixed|string Contenu de la réponse (HTML, JSON, XML, Object, etc.)
      */
