@@ -1,6 +1,8 @@
 import HomeService from "./home.service.js";
 import InterfaceService from "../service/interface.service.js";
 import service from "../service/service";
+import PathologyCtrl from './pathology/pathology.ctrl';
+import pathologyCtrl from './pathology/pathology.ctrl';
 
 class SearchType {
     constructor(content, filter) {
@@ -141,20 +143,22 @@ class HomeCtrl {
             });
         });
 
+        PathologyCtrl.loadInterface();
     }
 
     displayResults(results) {
         const tableBody = $('#table-body');
         tableBody.empty();
+        this.$scope.loadPathology = this.loadPathology;
         if(results.data.length === 0) {
             tableBody.append('<tr><td colspan="5">Aucun résultat</td></tr>');   
         } else {
             results.data.forEach((result) => {
                 tableBody.append('<tr>\n' +
-                    '            <td>' + result.desc + '</td>\n' +
-                    '            <td>' + result.mer + '</td>\n' +
-                    '            <td>' + result.type + '</td>\n' +
-                    '            <td><button class="details-button">' +
+                    '            <td>' + result.patho_desc[0].toUpperCase() + result.patho_desc.substring(1) + '</td>\n' +
+                    '            <td>' + result.patho_mer + '</td>\n' +
+                    '            <td>' + result.patho_type + '</td>\n' +
+                    '            <td><button class="details-button" onclick="loadPathology(' + result.patho_idp + ')">' +
                     '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">' +
                     '<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>' +
                     '</svg></button>' +
@@ -208,6 +212,11 @@ class HomeCtrl {
             }
             document.getElementById('suggests').appendChild(suggestList);
         }
+    }
+
+    loadPathology(id) {
+        let controller = new PathologyCtrl(id);
+        console.log('loadPathology', id);
     }
 
 }

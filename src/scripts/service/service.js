@@ -55,7 +55,11 @@ class Service {
             cache: 'default',
             body: data
         }).then((response) => {
-            return response.json();
+            try{
+                return response.json();
+            } catch (e) {
+                return response.text();
+            }
         });
     }
 }

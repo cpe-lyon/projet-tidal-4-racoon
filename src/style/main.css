@@ -433,25 +433,25 @@ button {
   margin-right: 20px;
 }
 
-.table-container {
+.table-container, #pathology .pathology_symptomes_table-container {
   width: 95vw !important;
   margin: auto;
   background-color: white;
   border-radius: 20px;
 }
 
-.tab-header {
+.tab-header, #pathology .pathology_symptomes_tab-header {
   background-color: #3A767D;
   width: 100%;
   color: white;
 }
-.tab-header th {
+.tab-header th, #pathology .pathology_symptomes_tab-header th {
   padding: 5px;
 }
-.tab-header :nth-child(1) {
+.tab-header :nth-child(1), #pathology .pathology_symptomes_tab-header :nth-child(1) {
   border-radius: 20px 0 0 0;
 }
-.tab-header :last-of-type {
+.tab-header :last-of-type, #pathology .pathology_symptomes_tab-header :last-of-type {
   border-radius: 0 20px 0 0;
 }
 
@@ -497,6 +497,52 @@ table td {
 .suggests .content a {
   text-decoration: none;
   color: black;
+}
+
+#pathology {
+  width: 95vw;
+  height: 95vh;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: #ECEBEB;
+  border: 4px solid #3A767D;
+  border-radius: 10px;
+  padding: 2rem;
+  position: absolute;
+  top: 2.5%;
+  left: 2.5%;
+  z-index: 1;
+}
+#pathology section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  overflow: auto;
+}
+#pathology #pathology_symptomes-table {
+  vertical-align: inherit;
+}
+#pathology .pathology_symptomes_table-container {
+  width: 100% !important;
+}
+#pathology #pathology__close {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: #3A767D;
+  color: white;
+  border: 4px solid #3A767D;
+  border-top: none;
+  border-left: none;
+  border-radius: 5% 0 50% 0;
+  height: 4rem;
+  width: 4rem;
+}
+#pathology #pathology__close:hover {
+  background-color: #d7df23;
 }
 
 .menu-nav {

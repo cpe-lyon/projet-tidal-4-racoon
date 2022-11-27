@@ -30,9 +30,13 @@ class DB
      * 
      * @return array|false Retourne le resultat de la requête ou False si un truc a merdé
      */
-    public function query(string $query): false|array
+    public function query(string $query, array $parameters): false|array
     {
-        return $this->getDb()->query($query)->fetchAll();
+        $this->query = $query;
+        $this->params = $parameters;
+        $this->stmt = $this->getDb()->prepare($this->query);
+        $this->stmt->execute($this->params);
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     //$Context->getAll("keywords");
@@ -105,6 +109,8 @@ class DB
      */
     public function getJoin(string $fromClass, string $pivotClass, string $finalClass, array $conditions = NULL): bool|array
     {
+        $propertiesToSelect = $this->propertyOfClasses($fromClass, $pivotClass, $finalClass);
+
         $fromVar  = get_class_vars($fromClass);  //Class Left Variables
         $pivotVar = get_class_vars($pivotClass); //Class Join Variables
         $finalVar = get_class_vars($finalClass); //Class Right Variables
@@ -116,7 +122,7 @@ class DB
         $pivotClass = $this->parseTableName($pivotClass); //ClassName Join
         $finalClass = $this->parseTableName($finalClass); //ClassName Right
 
-        $sQuery = "SELECT * FROM $fromClass JOIN $pivotClass ON $fromClass.$pivotKey = $pivotClass.$pivotKey JOIN $finalClass ON $pivotClass.$finalKey = $finalClass.$finalKey";
+        $sQuery = "SELECT " . implode(', ', $propertiesToSelect) .  " FROM $fromClass JOIN $pivotClass ON $fromClass.$pivotKey = $pivotClass.$pivotKey JOIN $finalClass ON $pivotClass.$finalKey = $finalClass.$finalKey";
         $params = [];
 
         if($conditions != NULL && sizeof($conditions))
@@ -391,5 +397,16 @@ class DB
             }
         }
         return $query ?? $this->getDb()->prepare($this->query);
+    }
+
+    private function propertyOfClasses(...$classes): array
+    {
+        $properties = array();
+        foreach ($classes as $class) {
+            foreach (get_class_vars($class) as $key => $value) {
+                $properties[] = $this->parseTableName($class) . '.' . $key . ' AS ' . '"' . strtolower($this->parseTableName($class) . '_' . $key) . '"';
+            }
+        }
+        return $properties;
     }
 }
