@@ -1,5 +1,55 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100&display=swap");
+.notif-container {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.notif {
+  z-index: 99;
+  overflow-y: scroll;
+  min-width: 300px;
+  width: fit-content;
+  max-width: 80%;
+  height: fit-content;
+  max-height: 100px;
+  border: 0.5px solid #001f23;
+  border-radius: 20px;
+  padding: 20px;
+  background-color: #89f2ff;
+  /* Track */
+  /* Handle */
+  /* Handle on hover */
+}
+.notif * {
+  margin: 0;
+}
+.notif.success {
+  background-color: #aef4a0;
+  border-color: #002201;
+}
+.notif.error {
+  background-color: #ffdad6;
+  border-color: #410002;
+}
+.notif::-webkit-scrollbar {
+  width: 10px;
+}
+.notif::-webkit-scrollbar-track {
+  border-radius: 5px;
+  margin: 12px;
+}
+.notif::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.4862745098);
+  border-radius: 5px;
+}
+.notif::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5803921569);
+}
+
 body {
   font-family: "Noto Sans", sans-serif;
 }

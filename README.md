@@ -23,6 +23,28 @@ Use this command to launch php server
 php -S localhost:8000 -t public
 ```
 
+## Création de la table Users 
+Requis pour utiliser les fonctionnalités liées au profil utilisateur.
+À exécuter dans PostrgeSQL : 
+```
+CREATE SEQUENCE users_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+
+CREATE TABLE "public"."users" (
+    "id" integer DEFAULT nextval('users_id_seq') NOT NULL,
+    "username" character varying(50) NOT NULL,
+    "name" character varying(50) NOT NULL,
+    "lastname" character varying(50) NOT NULL,
+    "mail" character varying(100) NOT NULL,
+    "password" character varying(60) NOT NULL,
+    "creationdate" date DEFAULT CURRENT_DATE NOT NULL,
+    "confirmationtoken" character varying(60),
+    "confirmationdate" date,
+    CONSTRAINT "users_mail_key" UNIQUE ("mail"),
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "users_username_key" UNIQUE ("username")
+) WITH (oids = false);
+
+```
 
 ## Utilisation de Sass  
 

@@ -2,6 +2,7 @@
 
 namespace Helper\MVC\Controller;
 
+use DateTime;
 use Helper\Twig\Page;
 use Helper\App\DB\DB;
 use Helper\MVC\Model\Users;
@@ -15,23 +16,149 @@ class ProfileController extends Controller
     public bool $isConnected = true;
     public bool $profileEditing = false;
     public bool $passwordEditing = false;
+    public $currentUser;
+
+    public function isLogged(): bool
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE || session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user'])) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     public function profile(): Page
     {
-        $params = [
-            'isConnected' => $this->isConnected,
-            'profileEditing' => $this->profileEditing,
-            'passwordEditing' => $this->passwordEditing
-        ];
+        if (!$this->isLogged()) {
+            $params = [
+                'isConnected' => false,
+                'profileEditing' => false,
+                'passwordEditing' => false
+            ];
+            return new Page('profil/profil.tpl.twig', $params);
+        } else {
+            $this->currentUser = $_SESSION['user'];
+            $params = [
+                'isConnected' => true,
+                'profileEditing' => false,
+                'passwordEditing' => false,
+                'user' => $this->currentUser
+            ];
+            return new Page('profil/profil.tpl.twig', $params);
+        }
+    }
+
+    public function profileEdit(Request $request, string $editionType): Page
+    {
+        if ($this->isLogged()) {
+            $this->currentUser = $_SESSION['user'];
+        }
+
+        if (strcmp($editionType, 'edit') == 0) {
+            $params = [
+                'isConnected' => true,
+                'profileEditing' => true,
+                'passwordEditing' => false,
+                'user' => $this->currentUser
+            ];
+        } elseif (strcmp($editionType, 'password') == 0) {
+            $params = [
+                'isConnected' => true,
+                'profileEditing' => false,
+                'passwordEditing' => true,
+                'user' => $this->currentUser
+            ];
+        } elseif (strcmp($editionType, 'logout') == 0) {
+            $this->logout();
+            $this->redirect('/profil');
+        } else {
+            $this->redirect('/profil');
+        }
 
         return new Page('profil/profil.tpl.twig', $params);
     }
 
     public function register(): Page
     {
+        if ($this->isLogged()) {
+            $this->redirect('/profil');
+        }
+
         $this->dbh = new DB();
+
+        $translationMonths = [
+            "January" => "Janvier",
+            "February" => "Février",
+            "March" => "Mars",
+            "April" => "Avril",
+            "May" => "Mai",
+            "June" => "Juin",
+            "July" => "Juillet",
+            "August" => "Août",
+            "September" => "Septembre",
+            "October" => "Octobre",
+            "November" => "Novembre",
+            "December" => "Décembre"
+        ];
+
         if (!empty($_POST)) {
-            $this->sendRegisterForm();
+
+            // Hachage du mot de passe
+            $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+            // Création du nouvel utilisateur à insérer en base
+            $newUser = new Users();
+            $newUser->username = $_POST['username'];
+            $newUser->name = $_POST['first-name'];
+            $newUser->lastname = $_POST['last-name'];
+            $newUser->mail = $_POST['mail'];
+            $newUser->password = $password;
+
+            try {
+                $this->dbh->insertNotAll($newUser);
+                $newValues = $this->dbh->getItemsWhere("users", ["id", "creationdate"], [new Condition("username", $_POST['username'])]);
+                $newUser->id = $newValues->id;
+
+                $date = date_create($newValues->creationdate);
+                $newDate = date_format($date, 'F Y');
+
+                foreach ($translationMonths as $en => $fr) {
+                    if (str_contains($newDate, $en)) {
+                        $newDate = str_replace($en, $fr, $newDate);
+                    }
+                }
+                $newUser->creationdate = $newDate;
+
+                session_destroy();
+                session_start();
+                $_SESSION['user'] = $newUser;
+
+                $this->redirect('/profil');
+            } catch (PDOException $e) {
+
+                if (str_contains($e->getMessage(), '(mail)')) {
+                    $params = [
+                        'error' => true,
+                        'errorTitle' => 'Un compte associé à ce mail existe déjà',
+                        'errorDesc' => $e->getMessage(),
+                    ];
+                } elseif (str_contains($e->getMessage(), '(username)')) {
+                    $params = [
+                        'error' => true,
+                        'errorTitle' => 'Un compte avec ce nom d\'utilisateur existe déjà',
+                        'errorDesc' => $e->getMessage(),
+                    ];
+                } else {
+                    $params = [
+                        'error' => true,
+                        'errorDesc' => $e->getMessage(),
+                    ];
+                }
+                return new Page('profil/register.tpl.twig', $params);
+            }
         }
 
         return new Page('profil/register.tpl.twig');
@@ -39,135 +166,51 @@ class ProfileController extends Controller
 
     public function login(): Page
     {
+        if ($this->isLogged()) {
+            $this->redirect('/profil');
+        }
+
         $this->dbh = new DB();
+
         if (!empty($_POST)) {
-            $this->sendLoginForm();
+            try {
+                $response = $this->dbh->getItemsWhere("users", ['*'], [new Condition("mail", $_POST['mail'])]);
+
+                if ($response) {
+                    if (password_verify($_POST['password'], $response->password) && $response != null) {
+                        session_destroy();
+                        session_start();
+                        $_SESSION['user'] = $response;
+                        $this->redirect('/profil');
+                    } else {
+                        $params = [
+                            "error" => true,
+                            "errorTitle" => "Mot de passe incorrect",
+                        ];
+                        return new Page('profil/login.tpl.twig', $params);
+                    }
+                } else {
+                    $params = [
+                        "error" => true,
+                        "errorTitle" => "Ce mail ne correspond à aucun compte",
+                    ];
+                    return new Page('profil/login.tpl.twig', $params);
+                }
+            } catch (PDOException $e) {
+                $params = [
+                    'error' => true,
+                    "errorTitle" => "Erreur de connexion!",
+                    'errorDesc' => $e->getMessage(),
+                ];
+                return new Page('profil/login.tpl.twig', $params);
+            }
         }
 
         return new Page('profil/login.tpl.twig');
     }
 
-    public function confirmProfile(Request $request, int $confirmId, string $confirmToken): Page
+    protected function logout()
     {
-        var_dump($confirmId);
-        var_dump($confirmToken);
-        $this->dbh = new DB();
-
-        try {
-            $usernameCondition = [new Condition("id", $confirmId)];
-            $userInfos = $this->dbh->getItemsWhere("users", ['*'], $usernameCondition);
-            var_dump($userInfos);
-        } catch (PDOException $e) {
-            // erreur de récupération des infos du client, mauvais mail de confirmation
-            var_dump($e->getMessage());
-        }
-
-        if ($userInfos && $userInfos->confirmationtoken == $confirmToken) {
-            // Démarrage de la session si le mail est confirmé
-            session_start();
-            // Mise à jour de la table pour valider la confirmation
-
-            // TODO: Faire requête d'update de la table
-            // $pdo->prepare('UPDATE users SET confirmation_token = NULL, confirmed_at = NOW() WHERE id = ?')->execute([$user_id]);
-
-            // TODO: Style et déclencheur flash message
-            $_SESSION['flash']['success'] = 'Votre compte a bien été validé';
-            $_SESSION['isConnected'] = true;
-            $_SESSION['user'] = $userInfos;
-
-            var_dump($_SESSION['user']);
-        } else {
-            $_SESSION['flash']['danger'] = "Ce token n'est plus valide";
-        }
-
-        $params = [
-            'isConnected' => $this->isConnected,
-            'profileEditing' => $this->profileEditing,
-            'passwordEditing' => $this->passwordEditing
-        ];
-
-        return new Page('profil/profil.tpl.twig', $params);
-    }
-
-    protected function sendRegisterForm(): void
-    {
-        // Hachage du mot de passe
-        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-        // Génération du token pour validation du compte
-        $token = $this->randomToken(60);
-
-        // Création du nouvel utilisateur à insérer en base
-        $newUser = new Users();
-        $newUser->username = $_POST['username'];
-        $newUser->name = $_POST['first-name'];
-        $newUser->lastname = $_POST['last-name'];
-        $newUser->mail = $_POST['mail'];
-        $newUser->password = $password;
-        $newUser->confirmationtoken = $token;
-
-        try {
-            $response = $this->dbh->insertNotAll($newUser);
-            var_dump($response);
-        } catch (PDOException $e) {
-            // TODO: Notification d'erreur et message sur le formulaire
-            var_dump($e->getMessage());
-
-            // 23505 : Violation clé unique - username ou mail
-            if (str_contains($e->getMessage(), '(mail)')) {
-                var_dump("mail");
-            } elseif (str_contains($e->getMessage(), '(username)')) {
-                var_dump("username");
-            }
-        }
-
-        $this->verifyUserMail($_POST['username'], $_POST['mail'], $token);
-    }
-
-    protected function verifyUserMail($username, $mail, $token)
-    {
-        try {
-            $usernameCondition = [new Condition("username", $username)];
-            $response = $this->dbh->getItemsWhere("users", ['id'], $usernameCondition);
-            $userId = $response->id;
-        } catch (PDOException $e) {
-            var_dump($e->getMessage());
-        }
-
-        /*
-        try {
-            // Envoi d'un mail de confirmation
-            mail($mail, 'Confirmation de votre compte A.A.A.', "Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://racoon/profil/confirm/$userId/$token");
-
-            $_SESSION['flash']['success'] = 'Un mail de confirmation vous a été envoyé pour valider votre compte';
-            var_dump("mail envoyé");
-        } catch (\Throwable $th) {
-            var_dump("Erreur dans l'envoi du mail de confirmation");
-        }
-        */
-    }
-
-    protected function sendLoginForm(): void
-    {
-        $conditions = [new Condition("mail", $_POST['mail']), new Condition("confirmationdate", NULL, "IS NOT NULL")];
-        $response = $this->dbh->getItemsWhere("users", ['*'], $conditions);
-
-        if (password_verify($_POST['password'], $response->password) && $response != null) {
-
-            var_dump("Connecté");
-            // $_SESSION['auth'] = $response;
-            // $_SESSION['flash']['success'] = 'Vous êtes maintenant connecté';
-            // header('Location: account.php');
-
-        } else {
-            // $_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte';
-            var_dump("Pas connecté");
-        }
-    }
-
-    // Generate a random token
-    protected function randomToken($length): string
-    {
-        $alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return substr(str_shuffle(str_repeat($alphabet, $length)), 0, $length);
+        unset($_SESSION['user']);
     }
 }

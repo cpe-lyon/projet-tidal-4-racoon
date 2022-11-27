@@ -10,6 +10,7 @@ namespace Helper\App\DB;
 class Condition
 {
     public static string $queryOperator = 'AND';
+    public bool $isLike = false;
 
     /**
      * Clé sur laquelle se base la condition
@@ -49,24 +50,50 @@ class Condition
      * @param string $key      La clé sous forme de string
      * @param mixed  $value    Valeur de la condition
      * @param string $operator Opération de la condition. Par défaut : `=`
+     * @param string $brutValue Permet de mettre un valeur sans guillemet
      */
-    public function __construct(string $key, mixed $value, string $operator = "=", string $brutBalue = "")
+    public function __construct(string $key, mixed $value, string $operator = "=", string $brutValue = "")
     {
         $this->key = $key;
         $this->value = $value;
-        if($brutBalue != "")
-        { $this->value = $brutBalue; }
+        if($brutValue != "")
+        { $this->value = $brutValue; }
 
         $this->operator = $operator;
     }
 
     public function generateQuery(bool $first): string
     {
-        return ($first ? '': ' ' . self::$queryOperator ) . ' ' . $this->key . ' ' . $this->operator . ' :' . $this->key;
+        $result = "";
+        if (!$first) {
+            $result .= " " . static::$queryOperator . " ";
+        }
+        if ($this->value === null) {
+            $result .= $this->key . " IS NULL";
+        } elseif (is_array($this->value)) {
+            $result .= $this->key . " " . $this->operator . " (";
+            foreach ($this->value as $key => $value) {
+                $result .= ':' . str_replace('.', '_', $this->key) . substr("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" , $key, $key+1) . ',';
+            }
+            $result = substr($result, 0, -1);
+            $result .= ")";
+            $this->isLike = true;
+        } else {
+            $result .= $this->key . " " . $this->operator . " :" . str_replace('.', '_', $this->key);
+        }
+        return $result;
     }
 
     public function generateParam(): array
     {
-        return [$this->key, $this->value];
+        if ($this->isLike) {
+            $result = [];
+            foreach ($this->value as $key => $value) {
+                $result[] = [str_replace('.', '_', $this->key) . substr("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" , $key, $key+1), $value];
+            }
+            return $result;
+        } else {
+            return [$this->key, $this->value];
+        }
     }
 }
