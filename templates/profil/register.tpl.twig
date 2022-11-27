@@ -15,12 +15,12 @@
         <div class="register__form-names">
             <input type="text" name="first-name" id="pFirstName" class="profile-form__input" placeholder="Prénom" required>
             <input type="text" name="last-name" id="pLastName" class="profile-form__input" placeholder="Nom" required>
-            <input type="text" name="username" id="pUsername" class="profile-form__input" placeholder="Nom d'utilisateur" required>
+            <input type="text" name="username" id="pUsername" class="profile-form__input {{errorTitle == 'Un compte avec ce nom d\'utilisateur existe déjà' ? '--error' : ' ' }}" placeholder="Nom d'utilisateur" required>
         </div>
     </div>
 
     <div class="register__form-main">
-        <input type="email" name="mail" id="pMail" class="profile-form__input" placeholder="Mail" required>
+        <input type="email" name="mail" id="pMail" class="profile-form__input {{errorTitle == 'Un compte associé à ce mail existe déjà' ? '--error' : ' ' }}" placeholder="Mail" required>
         <input type="email" name="mail-confirm" id="pMailConfirm" class="profile-form__input" placeholder="Confirmer le mail" required>
 
         <input type="password" name="password" id="pPassword" class="profile-form__input" placeholder="Mot de passe" required>

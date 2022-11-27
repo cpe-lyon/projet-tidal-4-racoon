@@ -2,7 +2,7 @@
 
 {% block body %}
 
-   {{ include('home/search.tpl.twig') }}
+   {{ include('home/search.tpl.twig', {isLogged: isLogged}) }}
 
    {{ include('home/result-tab.tpl.twig') }}
 

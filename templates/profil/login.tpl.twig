@@ -8,10 +8,10 @@
 
     <div class="login__form-main">
         <div class="profile-form__line">
-            <input type="text" name="mail" id="loginMail" class="profile-form__input" placeholder="Mail" required>
+            <input type="text" name="mail" id="loginMail" class="profile-form__input {{errorTitle == 'Ce mail ne correspond à aucun compte' ? '--error' : ' ' }}" placeholder="Mail" required>
         </div>
 
-        <input type="password" name="password" id="loginPassword" class="profile-form__input" placeholder="Mot de passe" required>
+        <input type="password" name="password" id="loginPassword" class="profile-form__input {{errorTitle == 'Mot de passe incorrect' ? '--error' : ' ' }}" placeholder="Mot de passe" required>
     </div>
 
     <div class="login__form-foot">

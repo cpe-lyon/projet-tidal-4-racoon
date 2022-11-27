@@ -142,13 +142,13 @@ class ProfileController extends Controller
                 if (str_contains($e->getMessage(), '(mail)')) {
                     $params = [
                         'error' => true,
-                        'errorTitle' => 'Un compte associé à ce mail existe déjà.',
+                        'errorTitle' => 'Un compte associé à ce mail existe déjà',
                         'errorDesc' => $e->getMessage(),
                     ];
                 } elseif (str_contains($e->getMessage(), '(username)')) {
                     $params = [
                         'error' => true,
-                        'errorTitle' => 'Un compte avec ce nom d\'utilisateur existe déjà.',
+                        'errorTitle' => 'Un compte avec ce nom d\'utilisateur existe déjà',
                         'errorDesc' => $e->getMessage(),
                     ];
                 } else {
@@ -207,13 +207,6 @@ class ProfileController extends Controller
         }
 
         return new Page('profil/login.tpl.twig');
-    }
-
-    // Generate a random token
-    protected function randomToken($length): string
-    {
-        $alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return substr(str_shuffle(str_repeat($alphabet, $length)), 0, $length);
     }
 
     protected function logout()
