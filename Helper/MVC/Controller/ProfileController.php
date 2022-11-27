@@ -4,7 +4,7 @@ namespace Helper\MVC\Controller;
 
 use Helper\Twig\Page;
 use Helper\App\DB\DB;
-use App\MVC\Model\Users;
+use Helper\MVC\Model\Users;
 use Helper\App\DB\Condition;
 use Helper\App\Routes\Request;
 use PDOException;
@@ -96,6 +96,7 @@ class ProfileController extends Controller
         // Génération du token pour validation du compte
         $token = $this->randomToken(60);
 
+        // Création du nouvel utilisateur à insérer en base
         $newUser = new Users();
         $newUser->username = $_POST['username'];
         $newUser->name = $_POST['first-name'];
@@ -108,6 +109,7 @@ class ProfileController extends Controller
             $response = $this->dbh->insertNotAll($newUser);
             var_dump($response);
         } catch (PDOException $e) {
+            // TODO: Notification d'erreur et message sur le formulaire
             var_dump($e->getMessage());
 
             // 23505 : Violation clé unique - username ou mail
@@ -131,15 +133,17 @@ class ProfileController extends Controller
             var_dump($e->getMessage());
         }
 
+        /*
         try {
             // Envoi d'un mail de confirmation
             mail($mail, 'Confirmation de votre compte A.A.A.', "Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://racoon/profil/confirm/$userId/$token");
-            // On redirige l'utilisateur vers la page de login avec un message flash
+
             $_SESSION['flash']['success'] = 'Un mail de confirmation vous a été envoyé pour valider votre compte';
-            header('Location: login.php');
+            var_dump("mail envoyé");
         } catch (\Throwable $th) {
             var_dump("Erreur dans l'envoi du mail de confirmation");
         }
+        */
     }
 
     protected function sendLoginForm(): void
