@@ -67,7 +67,7 @@ class Condition
 
     public function generateQuery(bool $first): string
     {
-        return ($first ? self::$queryOperator : '') . ' ' . $this->key . ' ' . $this->operator . ' :' . $this->key;
+        return ($first ? '': ' ' . self::$queryOperator ) . ' ' . $this->key . ' ' . $this->operator . ' :' . $this->key;
     }
 
     public function generateParam(): array

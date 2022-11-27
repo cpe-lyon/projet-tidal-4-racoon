@@ -374,7 +374,7 @@ class DB
             $this->query .= " WHERE ";
             foreach ($conditions as $key => $condition) {
                 /* @var Condition $condition */
-                $this->query .= $condition->generateQuery($key + 1 >= sizeof($conditions));
+                $this->query .= $condition->generateQuery($key == 0);
             }
             $query = $this->getDb()->prepare($this->query);
             foreach ($conditions as $condition) {
